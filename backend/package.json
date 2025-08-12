@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "prisma:generate": "prisma generate --schema=src/persistence/prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema=src/persistence/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=src/persistence/prisma/schema.prisma",
+    "prisma:push": "prisma db push --schema=src/persistence/prisma/schema.prisma",
+    "prisma:pull": "prisma db pull --schema=src/persistence/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.13.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "helmet": "^8.1.0",
+    "prisma": "^6.13.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

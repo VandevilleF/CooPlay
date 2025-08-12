@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  email         String    @unique
+  describe      String?
+  password_hash String
+  avatar_id     Int?
+  is_admin      Boolean   @default(false)
+  created_at    DateTime  @default(now())
+
+  // Relations directes
+  favorite_games    UserFavoriteGame[]
+  trophies         UserTrophy[]
+  events_created   Event[]            @relation("EventCreator")
+  event_participants EventParticipant[]
+  chats            Chat[]
+
+  @@map("users")
+}
+
+model Game {
+  id          Int       @id @default(autoincrement())
+  rawg_id     Int?      @unique
+  name        String
+  slug        String?   // Pour les URLs friendly
+  description String?   @db.Text
+  genres      String[]
+  cover_url   String?
+  rating      Float?
+  released    DateTime?
+
+  // Cache management
+  cached_at   DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  // Indicateurs de popularité pour optimiser les requêtes
+  popularity_score Int @default(0) // Basé sur le nombre de favoris/événements
+
+  // Relations
+  favorite_by     UserFavoriteGame[]
+  events          EventGame[]
+
+  @@index([popularity_score])
+  @@index([rawg_id])
+  @@map("games")
+}
+
+model Trophy {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  icon        String?
+
+  users UserTrophy[]
+
+  @@map("trophies")
+}
+
+model Event {
+  id               Int      @id @default(autoincrement())
+  title            String
+  description      String?
+  creator_id       Int
+  start_at         DateTime
+  max_participants Int
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  // Relations
+  creator      User                @relation("EventCreator", fields: [creator_id], references: [id])
+  games        EventGame[]
+  participants EventParticipant[]
+  chats        Chat[]
+
+  @@map("events")
+}
+
+model Chat {
+  id         Int      @id @default(autoincrement())
+  event_id   Int
+  user_id    Int
+  message    String   @db.Text
+  created_at DateTime @default(now())
+
+  // Relations
+  event Event @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [user_id], references: [id])
+
+  @@index([event_id, created_at])
+  @@map("chats")
+}
+
+// Tables de liaison
+
+model UserFavoriteGame {
+  user_id    Int
+  game_id    Int
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [game_id], references: [id])
+
+  @@id([user_id, game_id])
+  @@map("user_favorite_games")
+}
+
+model UserTrophy {
+  user_id    Int
+  trophy_id  Int
+  earned_at  DateTime @default(now())
+
+  user   User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  trophy Trophy @relation(fields: [trophy_id], references: [id])
+
+  @@id([user_id, trophy_id])
+  @@map("user_trophies")
+}
+
+model EventParticipant {
+  user_id    Int
+  event_id   Int
+  joined_at  DateTime @default(now())
+
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [event_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, event_id])
+  @@map("event_participants")
+}
+
+model EventGame {
+  event_id Int
+  game_id  Int
+
+  event Event @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  game  Game  @relation(fields: [game_id], references: [id])
+
+  @@id([event_id, game_id])
+  @@map("event_games")
+}
