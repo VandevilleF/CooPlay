@@ -15,10 +15,10 @@ datasource db {
 
 model User {
   id            Int       @id @default(autoincrement())
+  firebase_uid  String    @unique
   username      String    @unique
   email         String    @unique
   describe      String?
-  password_hash String
   avatar_id     Int?
   is_admin      Boolean   @default(false)
   created_at    DateTime  @default(now())
