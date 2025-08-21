@@ -1,3 +1,5 @@
 node_modules
 .env
 cooplay-firebase.json
+firebase.js
+test.js
