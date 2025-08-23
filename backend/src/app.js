@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import authRoutes from './presentation/routes/auth.routes.js';
+import userRoutes from './presentation/routes/user.routes.js';
 import { config } from './config/environment.js';
 import { AuthService } from './business/services/auth.service.js';
 import { UserService } from './business/services/user.service.js';
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use('/', authRoutes);
+app.use('/', userRoutes);
 
 const authService = new AuthService();
 const userService = new UserService();

@@ -15,12 +15,6 @@ class User {
 		this.trophies = [];
 		this.chat = [];
 	}
-	addDescribe(describe) {
-		if (describe.length > 300) {
-			throw new Error("La description doit faire maximum 300 caractères");
-		}
-		this.describe = describe;
-	}
 	canJoinEvent(event) {
 		if (event.isFull()) {
 			return false;

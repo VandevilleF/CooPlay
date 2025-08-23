@@ -76,7 +76,14 @@ router.post("/login", async (req, res) => {
  *         description: Non authentifié
  */
 router.get('/profil', firebaseAuthMiddleware, async (req, res) => {
-  const user = await userService.getUserByFirebaseUid(req.user.uid);
+    const userData = await userService.getUserByFirebaseUid(req.user.uid);
+  const user = {
+	"username": userData.username,
+	"email": userData.email,
+	"describe": userData.describe,
+	"avatar_id": userData.avatar_id,
+	"created_at": userData.created_at,
+  }
   res.status(200).json({ user });
 });
 
@@ -102,9 +109,6 @@ router.get('/profil', firebaseAuthMiddleware, async (req, res) => {
  *               describe:
  *                 type: string
  *                 example: "Fan de MMORPG"
- *               avatar:
- *                 type: string
- *                 example: "nouveau avatar"
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour

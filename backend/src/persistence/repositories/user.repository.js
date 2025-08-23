@@ -29,9 +29,9 @@ export class UserRepository {
 			data,
 		})
 	}
-	async delete (id) {
+	async delete (firebase_uid) {
 		return this.prisma.user.delete({
-			where: { id },
+			where: { firebase_uid },
 		});
 	}
 }

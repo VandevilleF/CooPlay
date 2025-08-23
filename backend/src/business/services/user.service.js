@@ -1,6 +1,7 @@
 export class UserService {
-	constructor(userRepository) {
+	constructor(userRepository, authService) {
 		this.userRepository = userRepository;
+		this.authService = authService;
 	}
 	async getUserByFirebaseUid(uid) {
 		return this.userRepository.findByFirebaseUid(uid);
@@ -10,5 +11,11 @@ export class UserService {
 	}
 	async updateUser( userId, data ) {
 		return this.userRepository.update( userId, data );
+	}
+	async deleteUserByFirebaseUid(uid) {
+		await this.userRepository.delete(uid);
+
+		await this.authService.deleteUser(uid);
+		return
 	}
 }

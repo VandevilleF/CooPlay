@@ -9,4 +9,7 @@ export class AuthService {
 		throw new Error("Invalid Firebase token");
 		}
 	}
+	async deleteUser(uid) {
+		return auth.deleteUser(uid);
+	}
 }
