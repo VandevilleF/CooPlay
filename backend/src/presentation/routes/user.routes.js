@@ -105,7 +105,6 @@ router.delete('/profil', firebaseAuthMiddleware, async (req, res) => {
     await userService.deleteUserByFirebaseUid(req.user.uid);
     res.status(204).send();
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Erreur lors de la suppression"});
   }
 });
