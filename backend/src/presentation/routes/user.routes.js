@@ -99,10 +99,6 @@ router.put('/profil', firebaseAuthMiddleware, async (req, res) => {
  *         description: Erreur serveur lors de la suppression
  */
 router.delete('/profil', firebaseAuthMiddleware, async (req, res) => {
-  console.log("Headers reçus :", req.headers);
-  console.log("Token :", req.headers.authorization);
-  console.log("User :", req.user);
-
   if (!req.user) return res.status(401).json({ error: "Token manquant ou invalide" });
 
   try {
