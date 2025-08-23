@@ -15,6 +15,8 @@ class User {
 		this.trophies = [];
 		this.chat = [];
 	}
+
+	// -- EVENT -- //
 	canJoinEvent(event) {
 		if (event.isFull()) {
 			return false;
@@ -44,29 +46,20 @@ class User {
 	canModerateEvent(event) {
 		return this.is_admin || event.creator_id !== this.id;
 	}
+
+	// -- FAVORITE GAME -- //
 	addFavoriteGame(game) {
-		if (this.favorites_games.some(g => g.id !== game.id)) {
+		if (this.favorites_games.some(g => g.id === game.id || g.game_id === game.id)) {
 			throw new Error("Ce jeu est déjà dans les favoris");
 		}
 		this.favorites_games.push(game);
 	}
 	removeFavoriteGame(gameId) {
-		if (!this.favorites_games.some(game => game.id === gameId || game.game_id === gameId)) {
+		if (!this.favorites_games.some(g => g.id === gameId || g.game_id === gameId)) {
 			throw new Error("Ce jeu n'est pas dans les favoris");
 		}
-		this.favorite_games = this.favorite_games.filter(
-			game => game.id !== gameId && game.game_id !== gameId
+		this.favorites_games = this.favorites_games.filter(
+			g => g.id !== gameId && g.game_id !== gameId
 		);
-	}
-	canChangePassword(oldPasswordPlaintext, hashComparer) {
-		// hashComparer est une fonction passée en paramètre qui retourne true si ok
-		if (!hashComparer(oldPasswordPlaintext, this.password_hash)) {
-			throw new Error("Ancien mot de passe incorrect");
-		}
-		return true;
-	}
-
-	changePassword(newPasswordHash) {
-		this.password_hash = newPasswordHash;
 	}
 }
