@@ -27,13 +27,38 @@ const options = {
         User: {
           type: 'object',
           properties: {
-            id: { type: 'string', example: '123' },
             firebase_uid: { type: 'string', example: 'firebase-uid-xyz' },
             email: { type: 'string', example: 'user@email.com' },
             username: { type: 'string', example: 'flo' },
             avatar_id: { type: 'string', nullable: true, example: null },
             createdAt: { type: 'string', format: 'date-time', example: '2025-08-20T12:00:00.000Z' },
             updatedAt: { type: 'string', format: 'date-time', example: '2025-08-20T12:30:00.000Z' }
+          }
+        },
+        FavoriteGame: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', example: "1" },
+            gameId: { type: 'string', example: "12345" },
+            name: { type: 'string', example: "Elden Ring" },
+            addedAt: { type: 'string', format: 'date-time', example: "2025-08-21T12:00:00Z" },
+          }
+        },
+        Trophy: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', example: "trophy_01" },
+            name: { type: 'string', example: "Premier pas" },
+            description: { type: 'string', example: "Inscription réussie" },
+          }
+        },
+        Event: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', example: "event_123" },
+            title: { type: 'string', example: "Tournoi League of Legends" },
+            type: { type: 'string', enum: ['created', 'joined'], example: "joined" },
+            date: { type: 'string', format: 'date-time', example: "2025-09-15T20:00:00Z" },
           }
         }
       }
