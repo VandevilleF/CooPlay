@@ -2,13 +2,17 @@ import express from "express";
 import { firebaseAuthMiddleware } from '../../presentation/middlewares/firebaseauth.middleware.js';
 import { FavoriteGameService } from "../../business/services/favorite.service.js";
 import { UserRepository } from "../../persistence/repositories/user.repository.js";
+import { UserService } from "../../business/services/user.service.js";
+import { AuthService } from '../../business/services/auth.service.js';
 import { FavoriteGameRepository } from "../../persistence/repositories/favorite.repository.js";
 
 const router = express.Router();
 
 const userRepository = new UserRepository();
 const favoriteGameRepository = new FavoriteGameRepository();
+const authService = new AuthService();
 const favoriteGameService = new FavoriteGameService(userRepository, favoriteGameRepository);
+const userService = new UserService(userRepository, authService);
 
 /**
  * @openapi
@@ -16,7 +20,7 @@ const favoriteGameService = new FavoriteGameService(userRepository, favoriteGame
  *   get:
  *     summary: Récupère la liste des jeux favoris de l’utilisateur
  *     tags:
- *       - User
+ *       - FavoritesGames
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -33,7 +37,8 @@ const favoriteGameService = new FavoriteGameService(userRepository, favoriteGame
  */
 router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
 	try {
-		const favoritesGames = await favoriteGameService.listFavoritesGames(req.user.uid);
+		const user = await userService.getUserByFirebaseUid(req.user.uid);
+		const favoritesGames = await favoriteGameService.listFavoritesGames(user.id);
 		res.status(200).json(favoritesGames);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -46,7 +51,7 @@ router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
  *   post:
  *     summary: Ajoute un jeu aux favoris
  *     tags:
- *       - User
+ *       - FavoritesGames
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -71,8 +76,9 @@ router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
  */
 router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
 	try {
+		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { gameId } = req.body;
-		const favorite = await favoriteGameService.addFavoriteGame(req.user.uid, gameId);
+		const favorite = await favoriteGameService.addFavoriteGame(user.id, gameId);
 		res.status(201).json(favorite);
 	} catch (err) {
 		res.status(400).json({ error: err.message });
@@ -85,14 +91,14 @@ router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
  *   delete:
  *     summary: Supprime un jeu des favoris
  *     tags:
- *       - User
+ *       - FavoritesGames
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: gameId
  *         schema:
- *           type: string
+ *           type: integer
  *         required: true
  *         description: ID du jeu à retirer des favoris
  *     responses:
@@ -103,8 +109,10 @@ router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
  */
 router.delete('/profil/favorites/:gameId', firebaseAuthMiddleware, async (req, res) => {
 	try {
-		const { gameId } = req.params;
-		await  favoriteGameService.removeFavoriteGame(req.user.uid, gameId);
+		const user = await userService.getUserByFirebaseUid(req.user.uid);
+		const gameId = parseInt(req.params.gameId, 10);
+		console.log(typeof gameId);
+		await favoriteGameService.removeFavoriteGame(user.id, gameId);
 		res.status(204).send();
 	} catch (err) {
 		res.status(500).json({ error: err.message });

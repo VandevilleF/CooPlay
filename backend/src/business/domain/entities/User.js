@@ -1,10 +1,9 @@
 class User {
-	constructor({id, username, email, describe = null, password_hash, avatar_id = null, is_admin = false, created_at}) {
+	constructor({id, username = null, email = null, describe = null, avatar_id = null, is_admin = false, created_at}) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.describe = describe;
-		this.password_hash = password_hash;
 		this.avatar_id = avatar_id;
 		this.is_admin = is_admin;
 		this.created_at = created_at;
@@ -63,3 +62,5 @@ class User {
 		);
 	}
 }
+
+export { User };

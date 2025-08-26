@@ -1,3 +1,5 @@
+import { User } from '../../business/domain/entities/User.js';
+
 export class FavoriteGameService {
 	constructor(userRepository, favoriteGameRepository) {
 		this.userRepository = userRepository;
@@ -5,10 +7,10 @@ export class FavoriteGameService {
 	}
 
 	async listFavoritesGames(userId) {
-		return this.favoriteGameRepository.favoriteGameRepository(userId);
+		return this.favoriteGameRepository.getUserFavoritesGames(userId);
 	}
 
-	async addFavoriteGame(userId, game) {
+	async addFavoriteGame(userId, gameId) {
 		/**
 		 * Adds a game to a user's favorites.
 		 * - Loads current favorites from DB.
@@ -20,9 +22,9 @@ export class FavoriteGameService {
 		const user = new User({ id: userId });
 		user.favorites_games = favoritesGames.map(f => f.game);
 
-		user.addFavoriteGame(game);
+		user.addFavoriteGame({ id: gameId });
 
-		return this.favoriteGameRepository.addFavoriteGame(userId, game.id);
+		return this.favoriteGameRepository.addFavoriteGame(userId, gameId);
 	}
 
 	async removeFavoriteGame(userId, gameId) {

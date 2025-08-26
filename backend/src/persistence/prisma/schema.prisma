@@ -29,11 +29,7 @@ model Game {
   id               Int                @id @default(autoincrement())
   rawg_id          Int?               @unique
   name             String
-  slug             String?
-  description      String?
-  genres           String[]
   cover_url        String?
-  rating           Float?
   released         DateTime?
   cached_at        DateTime           @default(now())
   updated_at       DateTime           @updatedAt

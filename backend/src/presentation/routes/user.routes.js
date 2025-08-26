@@ -109,157 +109,157 @@ router.delete('/profil', firebaseAuthMiddleware, async (req, res) => {
   }
 });
 
-/**
- * @openapi
- * /profil/favorites:
- *   get:
- *     summary: Récupère la liste des jeux favoris de l’utilisateur
- *     tags:
- *       - User
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Liste des jeux favoris
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/FavoriteGame'
- *       401:
- *         description: Non authentifié
- */
-router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
-	const user = await userRepository.getUserByFirebaseUid(req.user.uid);
-	const favoritesGames = await userRepository.getUserFavoriteGame(user.id);
+// /**
+//  * @openapi
+//  * /profil/favorites:
+//  *   get:
+//  *     summary: Récupère la liste des jeux favoris de l’utilisateur
+//  *     tags:
+//  *       - User
+//  *     security:
+//  *       - bearerAuth: []
+//  *     responses:
+//  *       200:
+//  *         description: Liste des jeux favoris
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 $ref: '#/components/schemas/FavoriteGame'
+//  *       401:
+//  *         description: Non authentifié
+//  */
+// router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
+// 	const user = await userRepository.getUserByFirebaseUid(req.user.uid);
+// 	const favoritesGames = await userRepository.getUserFavoriteGame(user.id);
 
-	res.status(200).json(favoritesGames);
-});
+// 	res.status(200).json(favoritesGames);
+// });
 
-/**
- * @openapi
- * /profil/favorites:
- *   post:
- *     summary: Ajoute un jeu aux favoris
- *     tags:
- *       - User
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               gameId:
- *                 type: string
- *                 example: "12345"
- *     responses:
- *       201:
- *         description: Jeu ajouté en favori
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/FavoriteGame'
- *       401:
- *         description: Non authentifié
- */
-router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
-	const user = await userRepository.getUserByFirebaseUid(req.user.uid);
-  const { gameId } = req.body;
+// /**
+//  * @openapi
+//  * /profil/favorites:
+//  *   post:
+//  *     summary: Ajoute un jeu aux favoris
+//  *     tags:
+//  *       - User
+//  *     security:
+//  *       - bearerAuth: []
+//  *     requestBody:
+//  *       required: true
+//  *       content:
+//  *         application/json:
+//  *           schema:
+//  *             type: object
+//  *             properties:
+//  *               gameId:
+//  *                 type: string
+//  *                 example: "12345"
+//  *     responses:
+//  *       201:
+//  *         description: Jeu ajouté en favori
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               $ref: '#/components/schemas/FavoriteGame'
+//  *       401:
+//  *         description: Non authentifié
+//  */
+// router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
+// 	const user = await userRepository.getUserByFirebaseUid(req.user.uid);
+//   const { gameId } = req.body;
 
-	const newFavoriteGame = await userRepository.addUserFavoriteGame(user.id, gameId);
+// 	const newFavoriteGame = await userRepository.addUserFavoriteGame(user.id, gameId);
 
-	res.status(201).json(newFavoriteGame);
-});
+// 	res.status(201).json(newFavoriteGame);
+// });
 
-/**
- * @openapi
- * /profil/favorites/{gameId}:
- *   delete:
- *     summary: Supprime un jeu des favoris
- *     tags:
- *       - User
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: gameId
- *         schema:
- *           type: string
- *         required: true
- *         description: ID du jeu à retirer des favoris
- *     responses:
- *       204:
- *         description: Jeu supprimé des favoris
- *       401:
- *         description: Non authentifié
- */
-router.delete('/profil/favorites/:gameId', firebaseAuthMiddleware, async (req, res) => {
-  const user = await userRepository.getUserByFirebaseUid(req.user.uid);
-  const { gameId } = req.params;
+// /**
+//  * @openapi
+//  * /profil/favorites/{gameId}:
+//  *   delete:
+//  *     summary: Supprime un jeu des favoris
+//  *     tags:
+//  *       - User
+//  *     security:
+//  *       - bearerAuth: []
+//  *     parameters:
+//  *       - in: path
+//  *         name: gameId
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: ID du jeu à retirer des favoris
+//  *     responses:
+//  *       204:
+//  *         description: Jeu supprimé des favoris
+//  *       401:
+//  *         description: Non authentifié
+//  */
+// router.delete('/profil/favorites/:gameId', firebaseAuthMiddleware, async (req, res) => {
+//   const user = await userRepository.getUserByFirebaseUid(req.user.uid);
+//   const { gameId } = req.params;
 
-  await userRepository.deleteUserFavoriteGame(user.id, gameId);
+//   await userRepository.deleteUserFavoriteGame(user.id, gameId);
 
-  res.status(204).send();
-});
+//   res.status(204).send();
+// });
 
-/**
- * @openapi
- * /profil/trophies:
- *   get:
- *     summary: Récupère les trophées de l’utilisateur
- *     tags:
- *       - User
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Liste des trophées
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Trophy'
- *       401:
- *         description: Non authentifié
- */
-router.get('/profil/trophies', firebaseAuthMiddleware, async (req, res) => {
-  const user = await userRepository.getUserByFirebaseUid(req.user.uid);
-  const userTrophies = await userRepository.getTrophies(user.id);
+// /**
+//  * @openapi
+//  * /profil/trophies:
+//  *   get:
+//  *     summary: Récupère les trophées de l’utilisateur
+//  *     tags:
+//  *       - User
+//  *     security:
+//  *       - bearerAuth: []
+//  *     responses:
+//  *       200:
+//  *         description: Liste des trophées
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 $ref: '#/components/schemas/Trophy'
+//  *       401:
+//  *         description: Non authentifié
+//  */
+// router.get('/profil/trophies', firebaseAuthMiddleware, async (req, res) => {
+//   const user = await userRepository.getUserByFirebaseUid(req.user.uid);
+//   const userTrophies = await userRepository.getTrophies(user.id);
 
-  res.status(200).json(userTrophies);
-});
+//   res.status(200).json(userTrophies);
+// });
 
-/**
- * @openapi
- * /profil/events:
- *   get:
- *     summary: Récupère les événements de l’utilisateur (créés et rejoints)
- *     tags:
- *       - User
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Liste des événements
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Event'
- *       401:
- *         description: Non authentifié
- */
-router.get('/profil/events', firebaseAuthMiddleware, async (req, res) => {
-  const user = await userRepository.getUserByFirebaseUid(req.user.uid);
-  const events = await userRepository.getUserEvents(user.id);
+// /**
+//  * @openapi
+//  * /profil/events:
+//  *   get:
+//  *     summary: Récupère les événements de l’utilisateur (créés et rejoints)
+//  *     tags:
+//  *       - User
+//  *     security:
+//  *       - bearerAuth: []
+//  *     responses:
+//  *       200:
+//  *         description: Liste des événements
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 $ref: '#/components/schemas/Event'
+//  *       401:
+//  *         description: Non authentifié
+//  */
+// router.get('/profil/events', firebaseAuthMiddleware, async (req, res) => {
+//   const user = await userRepository.getUserByFirebaseUid(req.user.uid);
+//   const events = await userRepository.getUserEvents(user.id);
 
-  res.status(200).json(events);
-});
+//   res.status(200).json(events);
+// });
 
 export default router;
