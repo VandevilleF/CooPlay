@@ -4,17 +4,17 @@ export class UserRepository {
 	constructor(prismaClient = prisma) {
 		this.prisma = prismaClient;
 	}
-	async findByFirebaseUid (uid) {
+	async findByFirebaseUid(uid) {
 		return this.prisma.user.findUnique({
 			where: { firebase_uid: uid},
 		});
 	}
-	async findByEmail (email) {
+	async getUserById(userId) {
 		return this.prisma.user.findUnique({
-			where: { email },
+			where: { id: userId },
 		});
 	}
-	async create ({ firebase_uid, username, email }) {
+	async create({ firebase_uid, username, email }) {
 		return this.prisma.user.create({
 			data: {
 				firebase_uid,
@@ -23,13 +23,13 @@ export class UserRepository {
 			},
 		});
 	}
-	async update (id, data) {
+	async update(id, data) {
 		return this.prisma.user.update({
 			where: { id },
 			data,
 		})
 	}
-	async delete (firebase_uid) {
+	async delete(firebase_uid) {
 		return this.prisma.user.delete({
 			where: { firebase_uid },
 		});

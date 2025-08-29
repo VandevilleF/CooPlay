@@ -16,7 +16,7 @@ const userService = new UserService(userRepository, authService);
 
 /**
  * @openapi
- * /profil/favorites:
+ * /favorites:
  *   get:
  *     summary: Récupère la liste des jeux favoris de l’utilisateur
  *     tags:
@@ -35,7 +35,7 @@ const userService = new UserService(userRepository, authService);
  *       401:
  *         description: Non authentifié
  */
-router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
+router.get('/', firebaseAuthMiddleware, async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const favoritesGames = await favoriteGameService.listFavoritesGames(user.id);
@@ -47,7 +47,7 @@ router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
 
 /**
  * @openapi
- * /profil/favorites:
+ * /favorites/{gameId}:
  *   post:
  *     summary: Ajoute un jeu aux favoris
  *     tags:
@@ -74,10 +74,10 @@ router.get('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
+router.post('/gameId', firebaseAuthMiddleware, async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
-		const { gameId } = req.body;
+		const gameId = parseInt(req.params.gameId, 10);
 		const favorite = await favoriteGameService.addFavoriteGame(user.id, gameId);
 		res.status(201).json(favorite);
 	} catch (err) {
@@ -87,7 +87,7 @@ router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
 
 /**
  * @openapi
- * /profil/favorites/{gameId}:
+ * /favorites/{gameId}:
  *   delete:
  *     summary: Supprime un jeu des favoris
  *     tags:
@@ -107,7 +107,7 @@ router.post('/profil/favorites', firebaseAuthMiddleware, async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.delete('/profil/favorites/:gameId', firebaseAuthMiddleware, async (req, res) => {
+router.delete('/:gameId', firebaseAuthMiddleware, async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const gameId = parseInt(req.params.gameId, 10);

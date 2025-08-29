@@ -14,7 +14,7 @@ const authenticateUserUseCase = new AuthenticateUserUseCase(authService, userSer
 
 /**
  * @openapi
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Authentifie un utilisateur avec Firebase
  *     tags:
@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
 
 /**
  * @openapi
- * /profil:
+ * /auth/profil:
  *   get:
  *     summary: Récupère les infos de l’utilisateur connecté
  *     tags:
@@ -89,7 +89,7 @@ router.get('/profil', firebaseAuthMiddleware, async (req, res) => {
 
 /**
  * @openapi
- * /profil:
+ * /auth/profil:
  *   put:
  *     summary: Modifie les infos de l’utilisateur connecté
  *     tags:
