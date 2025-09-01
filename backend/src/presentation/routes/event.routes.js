@@ -93,6 +93,70 @@ router.post("/", firebaseAuthMiddleware, async (req, res) => {
 	}
 });
 
+// ---- UPDATE EVENT ----
+/**
+ * @openapi
+ * /events/{eventId}:
+ *   put:
+ *     summary: Modifier un événement
+ *     tags:
+ *       - Events
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: eventId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'événement à modifier
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Nouveau titre"
+ *               description:
+ *                 type: string
+ *                 example: "Nouvelle description"
+ *               start_at:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-09-01T14:07:47.592Z"
+ *               max_participants:
+ *                 type: integer
+ *                 example: 5
+ *     responses:
+ *       200:
+ *         description: Modification réussie
+ *       400:
+ *         description: Erreur lors de la modification
+ *       404:
+ *         description: Événement non trouvé
+ */
+router.put("/:eventId", firebaseAuthMiddleware, async (req, res) => {
+	try {
+		const user = await userService.getUserByFirebaseUid(req.user.uid);
+		const { eventId } = req.params;
+		const { title, description, start_at, max_participants } = req.body;
+
+		await eventService.updateEvent(user.id, parseInt(eventId, 10), {
+			title,
+			description,
+			start_at,
+			max_participants,
+		});
+
+		res.status(201).json({ message: "Modification réussie" });
+	} catch (err) {
+		res.status(400).json({ error: err.message });
+	}
+});
+
 // ---- JOIN EVENT ----
 /**
  * @openapi

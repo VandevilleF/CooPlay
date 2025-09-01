@@ -49,7 +49,9 @@ export class EventRepository {
 				max_participants,
 				game_id: gameId,
 			},
-			include: { game: true }
+			include: {
+				game: true
+			}
 		});
 	}
 	async updateEvent(id, data) {

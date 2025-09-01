@@ -3,6 +3,7 @@ import { JoinEventUsesCase } from "../use-cases/events/join.event.usecase.js";
 import { LeaveEventUseCase } from "../use-cases/events/leave.event.usecase.js";
 import { DeleteEventUseCase } from "../use-cases/events/delete.event.usecase.js";
 import { UpdateEventGame } from "../use-cases/events/update.event.game.usecase.js";
+import { UpdateEvent } from "../use-cases/events/update.event.usecase.js";
 
 export class EventService {
 	constructor(userRepository, eventRepository) {
@@ -15,6 +16,7 @@ export class EventService {
 		this.leaveEventUC = new LeaveEventUseCase(userRepository, eventRepository);
 		this.deleteEventUC = new DeleteEventUseCase(userRepository, eventRepository);
 		this.updateEventGameUC = new UpdateEventGame(eventRepository);
+		this.updateEventUC = new UpdateEvent(userRepository, eventRepository);
 	}
 
 	async getAllEvents() {
@@ -27,6 +29,10 @@ export class EventService {
 
 	async createEvent(userId, { title, description, start_at, max_participants, gameId }) {
 		return this.createEventUC.execute(userId, { title, description, start_at, max_participants, gameId });
+	}
+
+	async updateEvent(userId, eventId, { title, description, start_at, max_participants }) {
+		return this.updateEventUC.execute(userId, eventId, { title, description, start_at, max_participants } );
 	}
 
 	async joinEvent(userId, eventId) {

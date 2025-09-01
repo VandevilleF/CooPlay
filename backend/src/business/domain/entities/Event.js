@@ -43,6 +43,38 @@ class Event {
 			throw new Error("L'utilisateur ne participe pas à cet événement");
 		}
 	}
+
+	updateEvent(userId, data) {
+		if (userId !== this.creator_id) {
+			throw new Error("Seul le créateur peut modifier l'événement");
+		}
+		if (this.hasStarted()) {
+			throw new Error("Impossible de modifier un événement déjà commencé");
+		}
+
+		// Propriétés modifiables
+		const updatableFields = {
+			title: (value) => this.title = value,
+			description: (value) => this.description = value,
+			start_at: (value) => this.start_at = new Date(value),
+			max_participants: (value) => {
+				if (value < this.participants.length) {
+					throw new Error("Le nombre maximum de participants ne peut pas être inférieur au nombre actuel de participants");
+				}
+				this.max_participants = value;
+			}
+		}
+
+		// Destructuration de l'objet en itérable par clé, valeur avec entries
+		Object.entries(data).forEach(([key, value]) => {
+			// Vérification que la valeur ne soit pas nulle et différente de celle existante
+			if (value !== undefined && updatableFields[key]) {
+				// Modifie la valeur par rapport à la clé donnée
+				updatableFields[key](value);
+			}
+		});
+	}
+
 	hasStarted() {
 		return new Date() >= this.start_at;
 	}

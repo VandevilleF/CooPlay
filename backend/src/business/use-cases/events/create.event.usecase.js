@@ -18,9 +18,8 @@ export class CreateEventUseCase {
 			description,
 			start_at,
 			max_participants,
-			gameId
+			game_id: gameId
 		});
-		console.log("Event créé côté entité:", event);
 
 		return this.eventRepository.createEvent(
 			event.title,
@@ -28,7 +27,7 @@ export class CreateEventUseCase {
 			user.id,
 			event.start_at,
 			event.max_participants,
-			event.gameId
+			event.game_id
 		);
 	}
 }
