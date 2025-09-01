@@ -1,3 +1,5 @@
+import { Event } from './Event.js';
+
 class User {
 	constructor({id, username = null, email = null, describe = null, avatar_id = null, is_admin = false, created_at}) {
 		this.id = id;

@@ -34,8 +34,9 @@ model Game {
   cached_at        DateTime           @default(now())
   updated_at       DateTime           @updatedAt
   popularity_score Int                @default(0)
-  events           EventGame[]
+
   favorite_by      UserFavoriteGame[]
+  events           Event[]
 
   @@index([popularity_score])
   @@index([rawg_id])
@@ -57,14 +58,15 @@ model Event {
   title            String
   description      String?
   creator_id       Int
+  game_id          Int
   start_at         DateTime
   max_participants Int
   created_at       DateTime           @default(now())
   updated_at       DateTime           @updatedAt
   chats            Chat[]
-  games            EventGame[]
   participants     EventParticipant[]
   creator          User               @relation("EventCreator", fields: [creator_id], references: [id])
+  game             Game               @relation(fields: [game_id], references: [id])
 
   @@map("events")
 }
@@ -113,14 +115,4 @@ model EventParticipant {
 
   @@id([user_id, event_id])
   @@map("event_participants")
-}
-
-model EventGame {
-  event_id Int
-  game_id  Int
-  event    Event @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  game     Game  @relation(fields: [game_id], references: [id])
-
-  @@id([event_id, game_id])
-  @@map("event_games")
 }
