@@ -30,6 +30,11 @@ class Event {
 		}
 		this.participants.push({ user_id: userId });
 	}
+
+	listParticipants() {
+		return this.participants;
+	}
+
 	removeParticipant(userId) {
 		if (userId === this.creator_id) {
 			throw new Error("Le créateur ne peut pas se retirer lui-même");

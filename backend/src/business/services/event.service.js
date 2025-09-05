@@ -4,6 +4,7 @@ import { LeaveEventUseCase } from "../use-cases/events/leave.event.usecase.js";
 import { DeleteEventUseCase } from "../use-cases/events/delete.event.usecase.js";
 import { UpdateEventGame } from "../use-cases/events/update.event.game.usecase.js";
 import { UpdateEvent } from "../use-cases/events/update.event.usecase.js";
+import { Event } from "../domain/entities/Event.js";
 
 export class EventService {
 	constructor(userRepository, eventRepository) {
@@ -37,6 +38,15 @@ export class EventService {
 
 	async joinEvent(userId, eventId) {
 		return this.joinEventUC.execute(userId, eventId);
+	}
+
+	async getEventParticipants(eventId) {
+		const dbEvent = await this.eventRepository.getEventById(eventId);
+		if (!dbEvent) throw new Error("Événement non trouvé");
+
+		const event = new Event(dbEvent);
+		event.listParticipants();
+		return this.getEventParticipants(eventId);
 	}
 
 	async leaveEvent(userId, eventId) {
