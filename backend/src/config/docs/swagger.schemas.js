@@ -67,5 +67,37 @@ export const swaggerSchemas = {
         items: { $ref: '#/components/schemas/Game' }
       }
     }
+  },
+  
+   ChatMessage: {
+    type: 'object',
+    properties: {
+      id: { type: 'integer', example: 1 },
+      eventId: { type: 'integer', example: 123 },
+      userId: { type: 'integer', example: 456 },
+      username: { type: 'string', example: 'GamerPro123' },
+      message: { type: 'string', example: 'Salut tout le monde ! Prêt pour le match ?' },
+      timestamp: { type: 'string', format: 'date-time', example: '2025-09-04T14:30:00.000Z' },
+      avatar: { type: 'string', nullable: true, example: 'https://example.com/avatars/user456.jpg' }
+    }
+  },
+
+  ChatResponse: {
+    type: 'object',
+    properties: {
+      success: { type: 'boolean', example: true },
+      data: {
+        type: 'array',
+        items: { $ref: '#/components/schemas/ChatMessage' }
+      }
+    }
+  },
+
+  ChatErrorResponse: {
+    type: 'object',
+    properties: {
+      success: { type: 'boolean', example: false },
+      message: { type: 'string', example: 'Vous ne participez pas à cet événement' }
+    }
   }
 };
