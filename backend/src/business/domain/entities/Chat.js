@@ -1,4 +1,4 @@
-class Chat {
+export class Chat {
 	constructor({ id, event_id, user_id, message, created_at }) {
 		this.id = id;
 		this.event_id = event_id;

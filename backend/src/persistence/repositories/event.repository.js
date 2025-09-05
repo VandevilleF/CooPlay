@@ -82,6 +82,17 @@ export class EventRepository {
 			}
 		});
 	}
+
+	async isUserParticipant(userId, eventId) {
+		const participant = await this.prisma.eventParticipant.findFirst({
+			where: {
+				user_id: userId,
+				event_id: eventId,
+			}
+		});
+		return !!participant;
+	}
+
 	async removeParticipant(eventId, userId) {
 		return this.prisma.eventParticipant.delete({
 			where: { user_id_event_id: { user_id: userId, event_id: eventId }}
