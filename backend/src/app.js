@@ -5,6 +5,7 @@ import authRoutes from './presentation/routes/auth.routes.js';
 import userRoutes from './presentation/routes/user.routes.js';
 import favoritesGamesRoutes from './presentation/routes/favorite.routes.js';
 import eventsRoutes from './presentation/routes/event.routes.js';
+import chatRoutes from './presentation/routes/chat.routes.js';
 import { config } from './config/environment.js';
 import { AuthService } from './business/services/auth.service.js';
 import { UserService } from './business/services/user.service.js';
@@ -20,14 +21,11 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/favorites', favoritesGamesRoutes);
 app.use('/events', eventsRoutes);
+app.use('/chat', chatRoutes);
 
 const authService = new AuthService();
 const userService = new UserService();
 const favoritesGamesService = new FavoriteGameService();
-
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', environment: config.env });
-});
 
 swaggerDocs(app);
 
