@@ -1,6 +1,11 @@
 import { Chat } from '../../business/domain/entities/Chat.js';
 
 export class ChatService {
+	constructor(chatRepository, eventRepository) {
+		this.chatRepository = chatRepository;
+		this.eventRepository = eventRepository;
+	}
+	
 	async canJoinChat(userId, eventId) {
 		const event = await this.eventRepository.getEventById(eventId);
 		if (event.creator_id === userId) {

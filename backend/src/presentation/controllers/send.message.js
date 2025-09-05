@@ -1,23 +1,23 @@
+import { SendMessage } from '../../business/use-cases/events/send.message.js';
+import { ChatService } from '../../business/services/chat.service.js';
 import { ChatRepository } from '../../persistence/repositories/chat.repository.js';
 import { EventRepository } from '../../persistence/repositories/event.repository.js';
 import { UserRepository } from '../../persistence/repositories/user.repository.js';
-import { JoinEventChatUseCase } from '../../business/use-cases/events/join.event.chat.usecase.js';
-import { ChatService } from '../../business/services/chat.service.js';
 
-
+const userRepository = new UserRepository();
 const chatRepository = new ChatRepository();
 const eventRepository = new EventRepository();
-const userRepository = new UserRepository();
 const chatService = new ChatService(chatRepository, eventRepository);
-const joinChatUseCase = new JoinEventChatUseCase(chatService);
+const sendMessageUseCase = new SendMessage(chatService);
 
-export const getMessages = async (req, res) => {
+export const sendMessage = async (req, res) => {
 	try {
 		const { eventId } = req.params;
 		const uid = req.user.uid;
+		const { message } = req.body;
 		const user = await userRepository.findByFirebaseUid(uid);
 
-		const result = await joinChatUseCase.execute(user.id, parseInt(eventId));
+		const result = await sendMessageUseCase.execute(user.id, parseInt(eventId), message);
 
 		if (result.success) {
 			res.status(200).json({
@@ -36,4 +36,4 @@ export const getMessages = async (req, res) => {
 			message: error.message
 		});
 	}
-};
+}
