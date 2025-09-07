@@ -4,22 +4,62 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { auth } from '../../services/firebase/config';
+import { validatePassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logique d'inscription ici
-    console.log({ email, password, confirmPassword });
+    setErrors({});
+    try {
+      if (password !== confirmPassword) {
+        setErrors({ confirm: 'Les mots de passe ne correspondent pas' });
+        return;
+      }
+      const status = await validatePassword(auth, password);
+
+      if (!status.isValid) {
+        const passwordErrors = [];
+        if (status.containsLowercaseLetter === false) passwordErrors.push('minuscule');
+        if (status.containsUppercaseLetter === false) passwordErrors.push('majuscule');
+        if (status.containsNumericCharacter === false) passwordErrors.push('chiffre');
+        if (status.containsNonAlphanumericCharacter === false) passwordErrors.push('caractère spécial');
+        if (status.meetsMinPasswordLength === false) passwordErrors.push('longueur minimale');
+
+        setErrors({ password: `Le mot de passe doit contenir: ${passwordErrors.join(', ')}` });
+        return;
+      }
+
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      handleRedirectLogin();
+
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const handleRedirectLogin = (e) => {
+    e.preventDefault();
+    navigate('/login');
+  }
 
   return (
     <Container className="auth-card">
       <Typography variant="h2">CooPlay</Typography>
       <Typography variant="h6">Rejoint ta communauté gaming</Typography>
+
+      {errors.general && (
+        <Typography color="error" sx={{ mb: 2 }}>{errors.general}</Typography>
+      )}
 
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>
         <TextField
@@ -38,6 +78,8 @@ export const RegisterForm = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          error={!!errors.password}
+          helperText={errors.password}
           required
         />
 
@@ -47,6 +89,8 @@ export const RegisterForm = () => {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          error={!!errors.confirm}
+          helperText={errors.confirm}
           required
         />
 
@@ -61,7 +105,12 @@ export const RegisterForm = () => {
 
       <Typography className="auth-divider">ou</Typography>
 
-      <Button className="auth-link">Se connecter</Button>
+      <Button
+      className="auth-link"
+      onClick={handleRedirectLogin}
+      >
+        Se connecter
+      </Button>
     </Container>
   );
 };
