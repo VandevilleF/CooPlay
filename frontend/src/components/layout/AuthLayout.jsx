@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
-import { authBackgroundStyles } from '../../styles/theme';
+import { layoutStyles } from '../../styles/theme';
 
 export const AuthLayout = ({ children }) => {
 	return (
-		<Box sx={authBackgroundStyles}>{children}</Box>
+		<Box sx={layoutStyles.authBackground}>{children}</Box>
 	);
 }

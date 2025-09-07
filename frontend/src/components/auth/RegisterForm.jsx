@@ -38,7 +38,6 @@ export const RegisterForm = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
           required
         />
 
@@ -48,7 +47,6 @@ export const RegisterForm = () => {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="••••••••"
           required
         />
 
@@ -63,9 +61,7 @@ export const RegisterForm = () => {
 
       <Typography className="auth-divider">ou</Typography>
 
-      <Button className="auth-link">
-        Se connecter
-      </Button>
+      <Button className="auth-link">Se connecter</Button>
     </Container>
   );
 };

@@ -7,7 +7,8 @@ import { LoginPage } from './pages/auth/LoginPage.jsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './styles/theme';
 
-import './App.css'
+import './styles/components/authComponents.css'
+import './styles/global.css'
 
 function App() {
   return (

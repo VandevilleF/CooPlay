@@ -1,0 +1,101 @@
+/* Card d'authentification */
+.auth-card {
+  background-color: #2a2a2a !important;
+  border-radius: 16px !important;
+  padding: 1.5rem !important;
+  max-width: 380px !important;
+  width: 90% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Inputs d'authentification */
+.auth-input {
+  width: 100% !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.auth-input .MuiOutlinedInput-root {
+  background-color: #3a3a3a !important;
+  border-radius: 8px !important;
+}
+
+.auth-input .MuiOutlinedInput-root fieldset {
+  border-color: #4a4a4a !important;
+}
+
+.auth-input .MuiOutlinedInput-root:hover fieldset {
+  border-color: #6366f1 !important;
+}
+
+.auth-input .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #6366f1 !important;
+  border-width: 2px !important;
+}
+
+.auth-input input {
+  color: #ffffff !important;
+  padding: 14px 16px !important;
+}
+
+.auth-input input::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Boutons d'authentification */
+.auth-button {
+  background-color: #6366f1 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 14px 0 !important;
+  width: 100% !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  margin-bottom: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+.auth-button:hover {
+  background-color: #5856eb !important;
+}
+
+.auth-link {
+  color: #6366f1 !important;
+  text-transform: none !important;
+  padding: 0.5rem !important;
+}
+
+.auth-link:hover {
+  text-decoration: underline !important;
+  background-color: transparent !important;
+}
+
+/* Textes d'authentification */
+.auth-divider {
+  color: #9ca3af !important;
+  font-size: 0.875rem !important;
+}
+
+.auth-forgot {
+  color: #6366f1 !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  text-align: right !important;
+  width: 100% !important;
+  margin-bottom: 2rem !important;
+}
+
+.auth-forgot:hover {
+  text-decoration: underline !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-card {
+    padding: 1.5rem 1rem !important;
+    width: 95% !important;
+  }
+}
