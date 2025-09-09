@@ -54,16 +54,14 @@ router.get('/', firebaseAuthMiddleware, async (req, res) => {
  *       - FavoritesGames
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               gameId:
- *                 type: string
- *                 example: "12345"
+ *     parameters:
+ *       - in: path
+ *         name: gameId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         example: 12345
+ *         description: ID du jeu à ajouter aux favoris
  *     responses:
  *       201:
  *         description: Jeu ajouté en favori
@@ -74,10 +72,11 @@ router.get('/', firebaseAuthMiddleware, async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.post('/gameId', firebaseAuthMiddleware, async (req, res) => {
+router.post('/:gameId', firebaseAuthMiddleware, async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const gameId = parseInt(req.params.gameId, 10);
+		
 		const favorite = await favoriteGameService.addFavoriteGame(user.id, gameId);
 		res.status(201).json(favorite);
 	} catch (err) {
