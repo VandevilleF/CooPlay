@@ -1,4 +1,3 @@
-// components/auth/RegisterForm.jsx
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -47,8 +46,7 @@ export const RegisterForm = () => {
     }
   };
 
-  const handleRedirectLogin = (e) => {
-    e.preventDefault();
+  const handleRedirectLogin = () => {
     navigate('/login');
   }
 
