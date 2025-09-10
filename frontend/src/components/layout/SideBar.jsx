@@ -14,7 +14,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import { useState } from 'react';
 
 
-export const Sidebar = () => {
+export const SideBar = () => {
 	const [selectedItem, setSelectedItem] = useState('Événements');
 
 	const menuItems = [
