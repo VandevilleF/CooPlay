@@ -6,3 +6,17 @@
 .MuiListItemButton-root.Mui-selected .MuiListItemText-root {
   color: #4f46e5 !important;
 }
+
+.MuiAppBar-root {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.MuiContainer-root {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
