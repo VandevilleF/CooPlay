@@ -1,0 +1,8 @@
+.MuiListItemButton-root.Mui-selected {
+  background-color: #2d2d30 !important;
+}
+
+.MuiListItemButton-root.Mui-selected .MuiListItemIcon-root,
+.MuiListItemButton-root.Mui-selected .MuiListItemText-root {
+  color: #4f46e5 !important;
+}
