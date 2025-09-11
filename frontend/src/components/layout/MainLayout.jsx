@@ -15,13 +15,12 @@ export const MainLayout = ({ children }) => {
 			<Box
 			component='main'
 			sx={{
-				flexGrow: 1,
-				p: 3
+				flexGrow: 1
 			}}
 			>
-				<Toolbar />
+				<Toolbar sx={{ minHeight: '3rem !important',}} />
 				{children || (
-					<Typography sx={{marginBottom: 2}}>
+					<Typography>
 						Contenu de l'appli
 					</Typography>
 				)}
