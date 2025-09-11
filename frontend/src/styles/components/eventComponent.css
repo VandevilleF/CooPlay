@@ -8,7 +8,7 @@
 /* Event list container - grid layout */
 .event-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 320px);
+  grid-template-columns: repeat(auto-fit, 370px);
   gap: 2rem;
   margin: 1rem;
 }

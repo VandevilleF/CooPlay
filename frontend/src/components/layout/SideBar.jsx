@@ -43,9 +43,9 @@ export const SideBar = () => {
 				},
 			}}
 		>
-			<Toolbar />
+			<Toolbar sx={{ minHeight: '3rem !important'}} />
 			<Box sx={{ overflow: 'auto' }}>
-				<List>
+				<List sx={{ paddingTop: '10px'}}>
 					{menuItems.map((item, index) => (
 						<ListItem key={item.text} disablePadding>
 							<ListItemButton selected={selectedItem === item.text}
@@ -62,7 +62,7 @@ export const SideBar = () => {
 									},
 									'&.Mui-selected .MuiListItemText-root': {
 										color: '#4f46e5',
-									}
+									},
 								}}
 							>
 								<ListItemIcon sx={{color: '#9ca3af'}}>

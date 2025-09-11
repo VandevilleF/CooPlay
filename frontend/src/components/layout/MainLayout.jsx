@@ -18,7 +18,7 @@ export const MainLayout = ({ children }) => {
 				flexGrow: 1
 			}}
 			>
-				<Toolbar sx={{ minHeight: '3rem !important',}} />
+				<Toolbar sx={{ minHeight: '3rem !important'}} />
 				{children || (
 					<Typography>
 						Contenu de l'appli

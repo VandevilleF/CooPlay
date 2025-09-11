@@ -1,11 +1,14 @@
 import { EventList } from '../../components/event/EventList.jsx';
 import { EventFilter } from '../../components/event/EventFilter.jsx';
+import { MainLayout } from '../../components/layout/MainLayout.jsx';
 
 export const EventPage = () => {
 	return (
 		<div className='event-page'>
-			<EventFilter />
-			<EventList />
+			<MainLayout>
+				<EventFilter />
+				<EventList />
+			</MainLayout>
 		</div>
 	);
 }
