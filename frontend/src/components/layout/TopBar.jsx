@@ -2,7 +2,6 @@ import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 
 export const TopBar = () => {

@@ -1,14 +1,11 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 import { RegisterPage } from './pages/auth/RegisterPage.jsx';
 import { LoginPage } from './pages/auth/LoginPage.jsx';
+import { EventPage } from './pages/event/EventPage.jsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './styles/theme';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/components/authComponents.css'
+import './styles/components/eventComponent.css'
 import './styles/global.css'
 
 function App() {
@@ -16,13 +13,12 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/eventpage" element={<EventPage />} />
         </Routes>
-        <RegisterPage />
       </ThemeProvider>
     </BrowserRouter>
-
   );
 }
 
