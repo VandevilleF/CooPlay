@@ -16,6 +16,7 @@
     "@mui/icons-material": "^6.5.0",
     "@mui/material": "^6.5.0",
     "axios": "^1.11.0",
+    "date-fns": "^4.1.0",
     "firebase": "^10.14.1",
     "firebaseui": "^6.1.0",
     "react": "^19.1.1",
