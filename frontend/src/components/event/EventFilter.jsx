@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 
-export const EventFilter = () => {
+export const EventFilter = ({ onCreateEvent }) => {
 	const [game, setGame] = useState('');
 	const [date, setDate] = useState('');
 
@@ -45,8 +45,12 @@ export const EventFilter = () => {
 					<MenuItem value='tomorrow'>Demain</MenuItem>
 				</Select>
 			</FormControl>
-				<Button className='create-event'>+ Créer un événement</Button>
-
+				<Button
+				className='create-event'
+				onClick={onCreateEvent}
+				>
+					+ Créer un événement
+				</Button>
 		</Box>
 	);
 }
