@@ -7,7 +7,20 @@ import Tooltip from '@mui/material/Tooltip';
 import '../../styles/components/eventComponent.css'
 import { useState } from 'react';
 
-export const EventCard = ({ gameTitle, eventTitle, dateTime, description, participants, maxParticipants }) => {
+export const EventCard = ({ gameTitle,
+	eventTitle,
+	dateTime,
+	description,
+	participants,
+	maxParticipants,
+	isUserEvent = false,
+	isCreator = false,
+	isParticipating = false,
+	onJoin,
+	onCancel,
+	onLeave,
+	onView
+}) => {
 	const [open, setOpen] = useState(false);
 
 	const handleTooltipOpen = () => {
@@ -34,7 +47,15 @@ export const EventCard = ({ gameTitle, eventTitle, dateTime, description, partic
 			</CardContent>
 			<CardActions>
 				<Typography className='participants-count'>{participants}/{maxParticipants} participants</Typography>
-				<Button className='join-button' variant="outlined">Rejoindre</Button>
+				{!isParticipating && !isUserEvent ? (
+					<Button className='join-button' variant="outlined" onClick={onJoin}>
+						Rejoindre
+					</Button>
+				) : (
+				<Button className='view-button' variant="outlined" onClick={onView}>
+					Afficher
+				</Button>
+				)}
 			</CardActions>
 		</Card>
 	)

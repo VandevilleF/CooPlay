@@ -3,9 +3,22 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
+import { useLocation } from 'react-router-dom';
 
 export const TopBar = () => {
-	const title = 'Événements disponibles';
+	const location = useLocation();
+
+	const getTitle = () => {
+		switch(location.pathname) {
+			case '/events':
+				return 'Événements disponibles';
+			case '/my-events':
+				return 'Mes Événements';
+			default:
+				return 'CooPlay';
+			}
+		};
+
 	const userAvatar = 'JD'
 	return (
 		<AppBar
@@ -29,7 +42,7 @@ export const TopBar = () => {
 				sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}
 				>
 					<Typography variant='h5' component='div'>
-						{title}
+						{getTitle}
 					</Typography>
 					<Avatar sx={{ backgroundColor: '#4f46e5', color: '#fafafa', width: 35, height: 35 }}>
 						{userAvatar}

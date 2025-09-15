@@ -12,10 +12,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import EventIcon from '@mui/icons-material/Event';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 250;
 
 export const SideBar = () => {
+	// const navigate = useNavigate();
 	const [selectedItem, setSelectedItem] = useState('Événements');
 
 	const menuItems = [
@@ -27,7 +29,11 @@ export const SideBar = () => {
 	]
 	const handleItemClick = (itemText) => {
 		setSelectedItem(itemText);
-		// navigate(`/${itemText.toLowerCase()}`);
+		// if (itemText === 'Événements') {
+		// navigate('/events');
+		// } else if (itemText === 'Mes événements') {
+		// navigate('/my-events');
+		// }
 	};
 
 	return (
@@ -44,7 +50,8 @@ export const SideBar = () => {
 			}}
 		>
 			<Toolbar sx={{ minHeight: '3rem !important'}} />
-			<Box sx={{ overflow: 'auto' }}>
+			<Box sx={{ overflow: 'auto' }}>import { useNavigate } from 'react-router-dom';
+
 				<List sx={{ paddingTop: '10px'}}>
 					{menuItems.map((item, index) => (
 						<ListItem key={item.text} disablePadding>
