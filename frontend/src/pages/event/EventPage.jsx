@@ -13,12 +13,20 @@ export const EventPage = () => {
 	return (
 		<div className='event-page'>
 			<MainLayout>
-				<EventFilter onCreateEvent={handleOpenModal} />
-				<EventList isUserEvent={false} />
-				<CreateEvent
-				open={openModal}
-				onClose={handleCloseModal}
-				/>
+				{({ currentUserId, authReady }) => (
+					<>
+						<EventFilter onCreateEvent={handleOpenModal} />
+						<EventList
+						isUserEvent={false}
+						currentUserId={currentUserId}
+						authReady={authReady}
+						/>
+						<CreateEvent
+						open={openModal}
+						onClose={handleCloseModal}
+						/>
+					</>
+				)}
 			</MainLayout>
 		</div>
 	);

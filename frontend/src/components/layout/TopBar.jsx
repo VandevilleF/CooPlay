@@ -3,9 +3,11 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
+import { UserAvatar } from '../avatar/Avatar';
 
-export const TopBar = () => {
+export const TopBar = ({ user }) => {
 	const location = useLocation();
 
 	const getTitle = () => {
@@ -44,9 +46,24 @@ export const TopBar = () => {
 					<Typography variant='h5' component='div'>
 						{getTitle()}
 					</Typography>
-					<Avatar sx={{ backgroundColor: '#4f46e5', color: '#fafafa', width: 35, height: 35 }}>
-						{userAvatar}
-					</Avatar>
+					{user ? (
+						// Ne s'affiche QUE quand user est chargé
+						user.avatar ? (
+							<Avatar
+							src={user.avatar}
+							alt={user.name}
+							sx={{ width: 35, height: 35 }}
+							/>
+						) : (
+							<UserAvatar
+							username={user.username}
+							sx={{ width: 35, height: 35 }}
+							/>
+						)
+						) : (
+						// Pendant le chargement : rien, ou un skeleton
+						<Box sx={{ width: 35, height: 35 }} />
+						)}
 				</Container>
 			</Toolbar>
 		</AppBar>
