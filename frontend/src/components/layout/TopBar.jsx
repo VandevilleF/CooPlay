@@ -21,7 +21,6 @@ export const TopBar = ({ user }) => {
 			}
 		};
 
-	const userAvatar = 'JD'
 	return (
 		<AppBar
 		position='fixed'
