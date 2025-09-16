@@ -2,6 +2,7 @@ import { EventList } from '../../components/event/EventList.jsx';
 import { EventFilter } from '../../components/event/EventFilter.jsx';
 import { MainLayout } from '../../components/layout/MainLayout.jsx';
 import { CreateEvent } from '../../components/event/ModalEvent.jsx';
+import { useState } from 'react';
 
 export const EventPage = () => {
 	const [openModal, setOpenModal] = useState(false);
@@ -13,7 +14,7 @@ export const EventPage = () => {
 		<div className='event-page'>
 			<MainLayout>
 				<EventFilter onCreateEvent={handleOpenModal} />
-				<EventList />
+				<EventList isUserEvent={false} />
 				<CreateEvent
 				open={openModal}
 				onClose={handleCloseModal}

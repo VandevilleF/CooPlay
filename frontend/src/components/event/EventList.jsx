@@ -1,11 +1,47 @@
-import { EventCard } from './EventCard.jsx';
 import '../../styles/components/eventComponent.css';
+
+import { auth } from '../../services/firebase/config';
+
+import { EventCard } from './EventCard.jsx';
 import { useEffect, useState } from 'react';
 import { formatEventDate } from '../../utils/dateFormatter.js';
+import { eventService } from '../../services/eventService.js';
+import { userService } from '../../services/userService';
 
-export const EventList = () => {
+
+export const EventList = ({ isUserEvent }) => {
   const [eventsList, setEventsList] = useState([]);
-  const [isUserEvent, setIsUserEvent] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
+
+  // Écouter l'état d'authentification Firebase
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setAuthReady(true);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Récupérer l'utilisateur quand Firebase est prêt
+  useEffect(() => {
+    if (!authReady) return;
+
+    const getCurrentUser = async () => {
+      try {
+        const user = await userService.getCurrentUser();
+        setCurrentUserId(user.id);
+      } catch (error) {
+        console.error('Erreur récupération utilisateur:', error);
+      }
+    };
+    getCurrentUser();
+  }, [authReady]);
+
+  // Charger les événements quand Firebase est prêt
+  useEffect(() => {
+    if (!authReady) return;
+    loadEvents();
+  }, [isUserEvent, authReady]);
 
   const loadEvents = async () => {
     try {
@@ -28,10 +64,6 @@ export const EventList = () => {
   const handleView = (eventId) => {
     navigate(`/events/${eventId}`);
   };
-
-  useEffect(() => {
-    loadEvents();
-  }, [isUserEvent]);
 
     return (
         <div className='event-list'>

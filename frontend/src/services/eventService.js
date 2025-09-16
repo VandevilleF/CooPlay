@@ -8,8 +8,8 @@ export const eventService = {
 	},
 
 	// Charger les événements(tous ou mes événements)
-	getAll: async (isUserEvent = false) => {
-		const endpoint = isUserEvent ? '/my-events' : '/events';
+	getAll: async (isUserEvent) => {
+		const endpoint = isUserEvent ? '/events/my-events' : '/events';
 		const response = await httpClient.get(endpoint);
 		return response.data;
 	},
