@@ -40,6 +40,10 @@ export class EventService {
 		return this.joinEventUC.execute(userId, eventId);
 	}
 
+	async getUserEvents(userId) {
+		return this.eventRepository.getUserEvents(userId);
+	}
+
 	async getEventParticipants(eventId) {
 		const dbEvent = await this.eventRepository.getEventById(eventId);
 		if (!dbEvent) throw new Error("Événement non trouvé");

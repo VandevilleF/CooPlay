@@ -54,6 +54,33 @@ export class EventRepository {
 			}
 		});
 	}
+	async getUserEvents(userId) {
+		return this.prisma.event.findMany({
+			where: {
+				OR: [
+					{ creator_id: userId }, // Événements créés par l'utilisateur
+					{
+					participants: {
+						some: {
+						user_id: userId // Événements où l'utilisateur participe
+						}
+					}
+					}
+				]
+			},
+			include: {
+			creator: { select: { id: true, username: true } },
+			participants: {
+				include: {
+				user: { select: { id: true, username: true } }
+				}
+			},
+			game: {
+				select: { id: true, name: true, cover_url: true }
+			}
+			}
+		});
+	}
 	async updateEvent(id, data) {
 		return this.prisma.event.update({
 			where: { id },

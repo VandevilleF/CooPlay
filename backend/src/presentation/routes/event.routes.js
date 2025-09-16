@@ -93,6 +93,58 @@ router.post("/", firebaseAuthMiddleware, async (req, res) => {
 	}
 });
 
+// ---- GET USER EVENT ----
+/**
+ * @openapi
+ * /events/my-events:
+ *   get:
+ *     summary: Récupérer les événements de l'utilisateur connecté
+ *     description: Retourne la liste des événements créés par l'utilisateur ou auxquels il participe
+ *     tags:
+ *       - Events
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Liste des événements de l'utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Event'
+ *       401:
+ *         description: Token d'authentification invalide ou manquant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid token"
+ *       400:
+ *         description: Erreur lors de la récupération des événements
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "User not found"
+ */
+router.get("/my-events", firebaseAuthMiddleware, async (req, res) => {
+	try {
+		const user = await userService.getUserByFirebaseUid(req.user.uid);
+		// Récupérer seulement les événements créés par l'utilisateur OU où il participe
+		const events = await eventService.getUserEvents(user.id);
+		res.status(200).json(events);
+	} catch (err) {
+		res.status(400).json({ error: err.message });
+	}
+});
+
 // ---- UPDATE EVENT ----
 /**
  * @openapi
