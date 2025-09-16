@@ -142,7 +142,7 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 							fullWidth
 							type="number"
 							value={formData.max_participants}
-							onChange={(e) => handleInputChange('maxParticipants', e.target.value)}
+							onChange={(e) => handleInputChange('max_participants', e.target.value)}
 							placeholder="5"
 							sx={inputStyle}
 						/>
