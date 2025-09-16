@@ -12,7 +12,7 @@ export const TopBar = () => {
 		switch(location.pathname) {
 			case '/events':
 				return 'Événements disponibles';
-			case '/my-events':
+			case '/events/my-events':
 				return 'Mes Événements';
 			default:
 				return 'CooPlay';
@@ -42,7 +42,7 @@ export const TopBar = () => {
 				sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}
 				>
 					<Typography variant='h5' component='div'>
-						{getTitle}
+						{getTitle()}
 					</Typography>
 					<Avatar sx={{ backgroundColor: '#4f46e5', color: '#fafafa', width: 35, height: 35 }}>
 						{userAvatar}
