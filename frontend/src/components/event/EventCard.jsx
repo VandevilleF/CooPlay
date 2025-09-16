@@ -14,11 +14,8 @@ export const EventCard = ({ gameTitle,
 	participants,
 	maxParticipants,
 	isUserEvent = false,
-	isCreator = false,
 	isParticipating = false,
 	onJoin,
-	onCancel,
-	onLeave,
 	onView
 }) => {
 	const [open, setOpen] = useState(false);

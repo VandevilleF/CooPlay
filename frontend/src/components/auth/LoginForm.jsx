@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firebase/config';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import httpClient from '../../utils/httpClient';
+import httpClient from '../../services/httpClient';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ export const LoginForm = () => {
   };
 
   const handleHomePage = () => {
-    navigate('/eventpage');
+    navigate('/events');
   }
 
   return (

@@ -47,7 +47,7 @@ export const RegisterForm = () => {
   };
 
   const handleRedirectLogin = () => {
-    navigate('/login');
+    navigate('/');
   }
 
   return (

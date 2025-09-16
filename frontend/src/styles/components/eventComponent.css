@@ -78,7 +78,8 @@
 }
 
 /* Join button */
-.join-button {
+.join-button,
+.view-button {
   background-color: transparent !important;
   border: 1px solid #6366f1 !important;
   color: #6366f1 !important;
@@ -88,9 +89,11 @@
   text-transform: none !important;
   border-radius: 6px !important;
   transition: all 0.2s ease !important;
+  width: 100px !important;
 }
 
-.join-button:hover {
+.join-button:hover,
+.view-button:hover {
   background-color: #6366f1 !important;
   color: white !important;
   transform: translateY(-1px);
