@@ -24,7 +24,7 @@ export const TopBar = ({ user }) => {
 	return (
 		<AppBar
 		position='fixed'
-		sx={{ backgroundColor: '#1a1a1a', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+		sx={{ backgroundColor: '#1a1a1a', '--Paper-overlay': 'none', backgroundImage: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
 		>
 			<Toolbar
 			disableGutters
