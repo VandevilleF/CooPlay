@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { GameSearch } from '../game/GameSearch';
+import { eventService } from '../../services/eventService';
 
 export const CreateEvent = ({ open, onClose, onSubmit }) => {
 	const [loading, setLoading] = useState(false);
@@ -21,7 +22,6 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 			...prev,
 			gameId: selectedGame.id.toString() // Stocke l'ID du jeu sélectionné
 		}));
-		console.log('Jeu sélectionné:', selectedGame);
 	};
 
 	const handleInputChange = (field, value) => {
@@ -42,7 +42,7 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 				max_participants: parseInt(formData.max_participants),
 				gameId: parseInt(formData.gameId)
 			};
-			await onSubmit(eventData);
+			await eventService.create(eventData);
 			onClose();
 
 			// Reset du formulaire
@@ -126,6 +126,8 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 					</Typography>
 					<TextField
 						fullWidth
+						value={formData.title}
+						onChange={(e) => handleInputChange('title', e.target.value)}
 						placeholder="Donnez un titre à votre événement"
 						sx={inputStyle}
 					/>
