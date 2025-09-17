@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { GameSearch } from '../game/GameSearch';
 
 export const CreateEvent = ({ open, onClose, onSubmit }) => {
 	const [loading, setLoading] = useState(false);
@@ -14,6 +15,14 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 		max_participants: '',
 		gameId: '',
 	});
+
+	const handleGameSelect = (selectedGame) => {
+		setFormData(prev => ({
+			...prev,
+			gameId: selectedGame.id.toString() // Stocke l'ID du jeu sélectionné
+		}));
+		console.log('Jeu sélectionné:', selectedGame);
+	};
 
 	const handleInputChange = (field, value) => {
 		setFormData(prev => ({ ...prev, [field]: value }));
@@ -124,16 +133,7 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 
 				{/* Jeu et participants */}
 				<Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-					<Box sx={{ flex: 1 }}>
-						<Typography variant="subtitle2" sx={{ color: '#aaa', mb: 1 }}>
-							Jeu
-						</Typography>
-						<TextField
-							fullWidth
-							placeholder="Counter-Strike 2"
-							sx={inputStyle}
-						/>
-					</Box>
+					<GameSearch onGameSelect={handleGameSelect} />
 					<Box sx={{ flex: 1 }}>
 						<Typography variant="subtitle2" sx={{ color: '#aaa', mb: 1 }}>
 							Participants max
