@@ -42,7 +42,7 @@ export const MainLayout = ({ children }) => {
 
 	return (
 		<Box sx={{ display: 'flex'}}>
-			<CssBaseline />
+			{/* <CssBaseline /> */}
 			<TopBar user={user} />
 			<SideBar />
 			<Box
@@ -52,7 +52,7 @@ export const MainLayout = ({ children }) => {
 			}}
 			>
 				<Toolbar sx={{ minHeight: '3rem !important'}} />
-				{ children({ currentUserId, authReady }) || (
+				{ children({ user, currentUserId, authReady }) || (
 					<Typography>
 						Contenu de l'appli
 					</Typography>
