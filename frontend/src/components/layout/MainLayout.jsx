@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import { userService } from '../../services/userService';
 import { auth } from '../../services/firebase/config';
+import { CommunSideBar } from "./CommunSideBar";
 
 
 export const MainLayout = ({ children }) => {
@@ -44,7 +45,9 @@ export const MainLayout = ({ children }) => {
 		<Box sx={{ display: 'flex'}}>
 			{/* <CssBaseline /> */}
 			<TopBar user={user} />
-			<SideBar />
+			<SideBar>
+				<CommunSideBar />
+			</SideBar>
 			<Box
 			component='main'
 			sx={{
