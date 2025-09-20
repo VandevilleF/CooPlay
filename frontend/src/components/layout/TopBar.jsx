@@ -1,13 +1,10 @@
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
-import { UserAvatar } from '../avatar/Avatar';
 
-export const TopBar = ({ user }) => {
+export const TopBar = ({ children, user }) => {
 	const location = useLocation();
 
 	const getTitle = () => {
@@ -16,6 +13,8 @@ export const TopBar = ({ user }) => {
 				return 'Événements disponibles';
 			case '/events/my-events':
 				return 'Mes Événements';
+			case '/events/:eventId/messages':
+				return "Chat de l'événement";
 			default:
 				return 'CooPlay';
 			}
@@ -45,24 +44,7 @@ export const TopBar = ({ user }) => {
 					<Typography variant='h5' component='div'>
 						{getTitle()}
 					</Typography>
-					{user ? (
-						// Ne s'affiche QUE quand user est chargé
-						user.avatar ? (
-							<Avatar
-							src={user.avatar}
-							alt={user.name}
-							sx={{ width: 35, height: 35 }}
-							/>
-						) : (
-							<UserAvatar
-							username={user.username}
-							sx={{ width: 35, height: 35 }}
-							/>
-						)
-						) : (
-						// Pendant le chargement : rien, ou un skeleton
-						<Box sx={{ width: 35, height: 35 }} />
-						)}
+					{children}
 				</Container>
 			</Toolbar>
 		</AppBar>

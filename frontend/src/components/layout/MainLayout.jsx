@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { userService } from '../../services/userService';
 import { auth } from '../../services/firebase/config';
 import { CommunSideBar } from "./CommunSideBar";
+import { ProfileAvatar } from "../avatar/ProfilAvatar";
 
 
 export const MainLayout = ({ children }) => {
@@ -44,7 +45,9 @@ export const MainLayout = ({ children }) => {
 	return (
 		<Box sx={{ display: 'flex'}}>
 			{/* <CssBaseline /> */}
-			<TopBar user={user} />
+			<TopBar user={user} >
+				<ProfileAvatar user={user} />
+			</TopBar>
 			<SideBar>
 				<CommunSideBar />
 			</SideBar>
