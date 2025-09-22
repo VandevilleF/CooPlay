@@ -24,17 +24,7 @@ export const EventActions = () => {
     loading,
     event,
     participants,
-    user
   } = useEvent();
-
-  console.log('Debug EventActions:', {
-    loading,
-    user,
-    event,
-    participants,
-    isUserCreator,
-    isUserParticipant
-  });
 
   const [confirmDialog, setConfirmDialog] = useState({
     open: false,

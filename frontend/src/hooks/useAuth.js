@@ -11,7 +11,6 @@ export const useAuth = () => {
   // Écouter l'état d'authentification Firebase
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-      console.log('useAuth: onAuthStateChanged appelé', { firebaseUser: !!firebaseUser });
       setAuthReady(true);
 
       if (firebaseUser) {
@@ -19,7 +18,6 @@ export const useAuth = () => {
         try {
           await firebaseUser.getIdToken(); // S'assurer que le token est prêt
           const userData = await userService.getCurrentUser();
-          console.log('useAuth: Utilisateur récupéré:', userData);
 
           setUser(userData);
           setCurrentUserId(userData.id);
@@ -29,7 +27,6 @@ export const useAuth = () => {
           setCurrentUserId(null);
         }
       } else {
-        console.log('useAuth: Aucun utilisateur Firebase connecté');
         setUser(null);
         setCurrentUserId(null);
       }

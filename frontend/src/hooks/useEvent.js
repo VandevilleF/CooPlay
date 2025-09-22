@@ -16,14 +16,12 @@ export const useEvent = (eventId = null) => {
 	// Fonction pour charger les données de l'événement
 	const fetchEventData = async () => {
 		if (!finalEventId) {
-			console.log('useEvent: aucun eventid fourni');
-		setError("Aucun ID d'événement fourni");
-		setLoading(false);
-		return;
-	}
+			setError("Aucun ID d'événement fourni");
+			setLoading(false);
+			return;
+		}
 
 		try {
-			console.log('useEvent: chargement des données eventId', finalEventId);
 			setLoading(true);
 			setError(null);
 
@@ -32,7 +30,6 @@ export const useEvent = (eventId = null) => {
 				eventService.getById(finalEventId),
 				eventService.getParticipants(finalEventId)
 			]);
-			console.log('useEvent: Données récupérées', { eventData, participantsData });
 
 			setEvent(eventData);
 			setParticipants(participantsData);
