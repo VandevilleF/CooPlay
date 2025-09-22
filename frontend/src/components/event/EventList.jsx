@@ -2,12 +2,15 @@ import '../../styles/components/eventComponent.css';
 
 import { EventCard } from './EventCard.jsx';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { formatEventDate } from '../../utils/dateFormatter.js';
 import { eventService } from '../../services/eventService.js';
 
 
 export const EventList = ({ isUserEvent, currentUserId, authReady }) => {
   const [eventsList, setEventsList] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!authReady) return;
