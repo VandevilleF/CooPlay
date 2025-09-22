@@ -8,17 +8,19 @@ export const TopBar = ({ children, user }) => {
 	const location = useLocation();
 
 	const getTitle = () => {
-		switch(location.pathname) {
-			case '/events':
-				return 'Événements disponibles';
-			case '/events/my-events':
-				return 'Mes Événements';
-			case '/events/:eventId/messages':
-				return "Chat de l'événement";
+		const path = location.pathname;
+
+		switch (true) {
+			case path === '/events':
+			return 'Événements disponibles';
+			case path === '/events/my-events':
+			return 'Mes Événements';
+			case path.match(/^\/events\/\d+$/) !== null:
+			return "Chat de l'événement";
 			default:
-				return 'CooPlay';
-			}
-		};
+			return 'CooPlay';
+		}
+	};
 
 	return (
 		<AppBar
