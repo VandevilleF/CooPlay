@@ -126,6 +126,26 @@ export class EventRepository {
 		});
 	}
 
+	async getEventParticipants(eventId) {
+		return await this.prisma.eventParticipant.findMany({
+			where: {
+				event_id: eventId
+			},
+			include: {
+				user: {
+					select: {
+						id: true,
+						username: true,
+						avatar_id: true
+					}
+				}
+			},
+			orderBy: {
+				joined_at: 'asc'
+			}
+		});
+	}
+
 	// -- Game --
 	async updateEventGame(eventId, newGameId) {
 		return await this.prisma.event.update({

@@ -355,7 +355,7 @@ router.put("/:eventId/game", firebaseAuthMiddleware, async (req, res) => {
 	}
 });
 
-// -- GET EVENT --
+// ---- GET EVENT ----
 /**
  * @openapi
  * /events/{eventId}:
@@ -389,6 +389,42 @@ router.get("/:eventId", async (req, res) => {
 		}
 
 		res.status(200).json(event);
+	} catch (err) {
+		res.status(400).json({ error: err.message });
+	}
+});
+
+// ---- GET EVENT PARTICIPANTS ----
+/**
+ * @openapi
+ * /events/{eventId}/participants:
+ *   get:
+ *     summary: Récupérer les participants d'un événement
+ *     tags:
+ *       - Events
+ *     parameters:
+ *       - in: path
+ *         name: eventId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Liste des participants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Événement non trouvé
+ */
+router.get("/:eventId/participants", async (req, res) => {
+	try {
+		const { eventId } = req.params;
+		const participants = await eventService.getEventParticipants(parseInt(eventId, 10));
+		res.status(200).json(participants);
 	} catch (err) {
 		res.status(400).json({ error: err.message });
 	}

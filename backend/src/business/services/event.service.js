@@ -50,7 +50,7 @@ export class EventService {
 
 		const event = new Event(dbEvent);
 		event.listParticipants();
-		return this.getEventParticipants(eventId);
+		return await this.eventRepository.getEventParticipants(eventId);
 	}
 
 	async leaveEvent(userId, eventId) {
