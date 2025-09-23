@@ -4,7 +4,10 @@ export class SocketManager {
 	constructor(httpServer) {
 		this.io = new Server(httpServer, {
 			cors: {
-				origin: process.env.FRONTEND_URL,
+				origin: [
+					process.env.FRONTEND_URL || "http://localhost:5173",
+					process.env.FRONTEND_DOCKER_URL || "http://frontend:5173"
+				],
 				methods: ["GET", "POST"],
 				credentials: true
 			}
