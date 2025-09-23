@@ -47,7 +47,7 @@ export const ChatWindow = () => {
 			}
 		};
 
-		loadMessages(); // Correction: sortir loadMessages() du try/catch
+		loadMessages();
 	}, [eventId, user, authLoading]);
 
 	useEffect(() => {
