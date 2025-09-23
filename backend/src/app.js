@@ -1,6 +1,8 @@
 import express from 'express';
+import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
+
 import authRoutes from './presentation/routes/auth.routes.js';
 import userRoutes from './presentation/routes/user.routes.js';
 import favoritesGamesRoutes from './presentation/routes/favorite.routes.js';
@@ -13,7 +15,17 @@ import { UserService } from './business/services/user.service.js';
 import { FavoriteGameService } from './business/services/favorite.service.js';
 import { swaggerDocs } from './config/docs/swagger.js';
 
+import { SocketManager } from './infrastructure/websocket/socketManager.js';
+import { chatHandler } from './presentation/handler/chat.handler.js';
+import { socketAuthMiddleware } from './presentation/middlewares/socket-auth.middleware.js';
+
 const app = express();
+
+// Créer le serveur HTTP à partir de l'app Express
+const httpServer = http.createServer(app);
+
+const socketManager = new SocketManager(httpServer);
+socketManager.setup(socketAuthMiddleware, chatHandler);
 
 app.use(cors());
 app.use(helmet());
@@ -31,4 +43,4 @@ const favoritesGamesService = new FavoriteGameService();
 
 swaggerDocs(app);
 
-export default app;
+export default httpServer;

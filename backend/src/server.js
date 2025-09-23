@@ -1,6 +1,7 @@
-import app from './app.js';
+import httpServer from './app.js';
 import { config } from './config/environment.js';
 
-app.listen(config.port, () => {
+httpServer.listen(config.port, () => {
   console.log(`Backend running on http://localhost:${config.port}`);
+  console.log(`Socket.io ready`);
 });
