@@ -4,6 +4,7 @@ import { EventPage } from './pages/event/EventPage.jsx';
 import { MyEventPage } from './pages/event/MyEventPage.jsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { ProfilePage } from './pages/profil/ProfilePage.jsx';
+import { ChatEventPage } from './pages/event/ChatEventPage.jsx';
 import { theme } from './styles/theme';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/components/authComponents.css'
@@ -20,6 +21,7 @@ function App() {
           <Route path="/events" element={<EventPage />} />
           <Route path="/events/my-events" element={<MyEventPage />} />
           <Route path="/profil" element={<ProfilePage />} />
+          <Route path='/events/:eventId' element={<ChatEventPage />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
