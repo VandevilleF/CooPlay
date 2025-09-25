@@ -59,7 +59,13 @@ export const InputMessage = () => {
 	};
 
 	return (
-		<Box sx={{ display: 'flex', backgroundColor: '#1a1a1a', p: 1, alignItems: 'center', gap: 1, position: 'fixed', bottom: 0, right: 0, left: 250 }}>
+		<Box sx={{ display: 'flex',
+		backgroundColor: '#1a1a1a',
+		p: 1, alignItems: 'center',
+		gap: 1, position: 'fixed',
+		bottom: 0, right: 0,
+		left: { xs: 0, sm: 250 } }}
+		>
 			<TextField
 			fullWidth
 			value={message}
