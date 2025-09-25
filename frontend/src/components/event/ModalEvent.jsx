@@ -51,8 +51,7 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 				description: '',
 				start_at: '',
 				max_participants: '',
-				gameId: '',
-				microRequired: false
+				gameId: ''
 			});
 		} catch (error) {
 			console.error(error);
@@ -76,7 +75,10 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 		top: '50%',
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
-		width: 500,
+		width: { xs: '90%', sm: 500 },
+		maxWidth: '90vw',
+		maxHeight: '90vh',
+		overflow: 'auto',
 		bgcolor: '#1a1a1a',
 		border: '1px solid #333',
 		borderRadius: 1,
@@ -134,7 +136,7 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 				</Box>
 
 				{/* Jeu et participants */}
-				<Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+				<Box sx={{ display: 'flex', gap: 2, mb: 3, flexDirection: { xs: 'column', sm: 'row' } }}>
 					<GameSearch onGameSelect={handleGameSelect} />
 					<Box sx={{ flex: 1 }}>
 						<Typography variant="subtitle2" sx={{ color: '#aaa', mb: 1 }}>
@@ -152,7 +154,7 @@ export const CreateEvent = ({ open, onClose, onSubmit }) => {
 				</Box>
 
 				{/* Date et Heure */}
-				<Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+				<Box sx={{ display: 'flex', gap: 2, mb: 3, flexDirection: { xs: 'column', sm: 'row' } }}>
 					<Box sx={{ flex: 1 }}>
 						<Typography variant="subtitle2" sx={{ color: '#aaa', mb: 1 }}>
 							Date
