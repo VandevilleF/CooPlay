@@ -42,7 +42,7 @@ export const ProfileHeader = ({ user }) => {
 				<Box sx={{ width: 100, height: 100 }} />
 				)}
 			</Box>
-			<Box sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1}}>
+			<Box sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1, flexDirection: { xs: 'column', sm: 'row' }}}>
 				<Box sx={{ display: 'flex',
 					flexDirection: 'column',
 					justifyContent: 'center'}}>
@@ -52,7 +52,7 @@ export const ProfileHeader = ({ user }) => {
 					</Typography>
 					<Typography sx={{ fontSize: 15, color: '#9ca3af' }}>{user.describe}</Typography>
 				</Box>
-				<Box>
+				<Box sx={{ alignSelf: { xs: 'flex-end', sm: 'auto' }}}>
 					<Button
 					onClick={handleSignOut}
 					sx={{border: '1px solid #6366f1'}}
