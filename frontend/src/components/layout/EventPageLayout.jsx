@@ -5,15 +5,25 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import { EventActions } from '../event/EventActions.jsx';
+import { useState } from 'react';
 
 export const EventPageLayout = ({ children }) => {
+	const [mobileOpen, setMobileOpen] = useState(false);
+
+	const handleDrawerToggle = () => {
+		setMobileOpen(!mobileOpen);
+	};
+
 	return (
 		<Box sx={{ display: 'flex'}}>
 			<CssBaseline />
-			<TopBar>
+			<TopBar onDrawerToggle={handleDrawerToggle} >
 				<EventActions />
 			</TopBar>
-			<SideBar>
+			<SideBar
+			mobileOpen={mobileOpen}
+			onDrawerToggle={handleDrawerToggle}
+			>
 				<SideBarChat />
 			</SideBar>
 			<Box

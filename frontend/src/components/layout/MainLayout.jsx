@@ -15,6 +15,11 @@ export const MainLayout = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [currentUserId, setCurrentUserId] = useState(null);
 	const [authReady, setAuthReady] = useState(false);
+	const [mobileOpen, setMobileOpen] = useState(false);
+
+	const handleDrawerToggle = () => {
+		setMobileOpen(!mobileOpen);
+	};
 
 	// Écouter l'état d'authentification Firebase
 	useEffect(() => {
@@ -45,10 +50,13 @@ export const MainLayout = ({ children }) => {
 	return (
 		<Box sx={{ display: 'flex'}}>
 			{/* <CssBaseline /> */}
-			<TopBar user={user} >
+			<TopBar user={user} onDrawerToggle={handleDrawerToggle} >
 				<ProfileAvatar user={user} />
 			</TopBar>
-			<SideBar>
+			<SideBar
+			mobileOpen={mobileOpen}
+			onDrawerToggle={handleDrawerToggle}
+			>
 				<CommunSideBar />
 			</SideBar>
 			<Box

@@ -2,9 +2,13 @@ import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useLocation } from 'react-router-dom';
 
-export const TopBar = ({ children, user }) => {
+const drawerWidth = 250;
+
+export const TopBar = ({ children, user, onDrawerToggle }) => {
 	const location = useLocation();
 
 	const getTitle = () => {
@@ -25,20 +29,28 @@ export const TopBar = ({ children, user }) => {
 	return (
 		<AppBar
 		position='fixed'
-		sx={{ backgroundColor: '#1a1a1a', '--Paper-overlay': 'none', backgroundImage: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+		sx={{ backgroundColor: '#1a1a1a',
+			'--Paper-overlay': 'none',
+			backgroundImage: 'none',
+			zIndex: (theme) => theme.zIndex.drawer + 1,
+			width: { sm: `calc(100% - ${drawerWidth}px)` },
+			ml: { sm: `${drawerWidth}px` }
+		}}
 		>
 			<Toolbar
 			disableGutters
 			sx={{
 				minHeight: '3rem !important'
 			}}>
-				<Typography
-				variant='h5'
-				component='div'
-				sx={{width: '250px', color: '#4f46e5', borderRight: '1px solid rgba(255, 255, 255, 0.12)', height: '3rem', alignContent: 'center', paddingLeft: 2}}
+				<IconButton
+					color="inherit"
+					aria-label="open drawer"
+					edge="start"
+					onClick={onDrawerToggle}
+					sx={{ mr: 2, ml: 1, display: { sm: 'none' } }}
 				>
-					CooPlay
-				</Typography>
+					<MenuIcon />
+				</IconButton>
 				<Container
 				maxWidth={false}
 				sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}
