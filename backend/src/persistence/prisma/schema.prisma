@@ -65,7 +65,7 @@ model Event {
   updated_at       DateTime           @updatedAt
   chats            Chat[]
   participants     EventParticipant[]
-  creator          User               @relation("EventCreator", fields: [creator_id], references: [id])
+  creator          User               @relation("EventCreator", fields: [creator_id], references: [id], onDelete: Cascade)
   game             Game               @relation(fields: [game_id], references: [id])
 
   @@map("events")
@@ -78,7 +78,7 @@ model Chat {
   message    String
   created_at DateTime @default(now())
   event      Event    @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  user       User     @relation(fields: [user_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([event_id, created_at])
   @@map("chats")
@@ -88,7 +88,7 @@ model UserFavoriteGame {
   user_id    Int
   game_id    Int
   created_at DateTime @default(now())
-  game       Game     @relation(fields: [game_id], references: [id])
+  game       Game     @relation(fields: [game_id], references: [id], onDelete: Cascade)
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, game_id])
@@ -99,7 +99,7 @@ model UserTrophy {
   user_id   Int
   trophy_id Int
   earned_at DateTime @default(now())
-  trophy    Trophy   @relation(fields: [trophy_id], references: [id])
+  trophy    Trophy   @relation(fields: [trophy_id], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, trophy_id])
