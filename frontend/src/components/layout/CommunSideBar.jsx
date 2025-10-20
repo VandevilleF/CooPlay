@@ -20,9 +20,9 @@ export const CommunSideBar = () => {
 	const menuItems = [
 		{text: 'Événements', icon: <EventIcon />, path: '/events'},
 		{text: 'Mes événements', icon: <EventNoteIcon />, path: '/events/my-events'},
-		{text: 'Favoris', icon: <FavoriteIcon />, path: '/favoris'},
+		// {text: 'Favoris', icon: <FavoriteIcon />, path: '/favoris'},
 		{text: 'Profil', icon: <AccountCircleIcon />, path: '/profil'},
-		{text: 'Paramètres', icon: <SettingsIcon />, path: '/parametres'},
+		// {text: 'Paramètres', icon: <SettingsIcon />, path: '/parametres'},
 	]
 
 	useEffect(() => {

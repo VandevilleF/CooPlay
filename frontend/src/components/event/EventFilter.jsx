@@ -6,19 +6,19 @@ import Box from '@mui/material/Box';
 import { useState } from 'react';
 
 export const EventFilter = ({ onCreateEvent }) => {
-	const [game, setGame] = useState('');
-	const [date, setDate] = useState('');
+	// const [game, setGame] = useState('');
+	// const [date, setDate] = useState('');
 
-	const handleGame = (event) => {
-		setGame(event.target.value);
-	};
-	const handleDate = (event) => {
-		setDate(event.target.value);
-	};
+	// const handleGame = (event) => {
+	// 	setGame(event.target.value);
+	// };
+	// const handleDate = (event) => {
+	// 	setDate(event.target.value);
+	// };
 
 	return (
 		<Box className='event-filter'>
-			<FormControl sx={{ minWidth: 140 }}>
+			{/* <FormControl sx={{ minWidth: 140 }}>
 				<Select
 				value={game}
 				onChange={handleGame}
@@ -43,7 +43,7 @@ export const EventFilter = ({ onCreateEvent }) => {
 					<MenuItem value=''>Aujourd'hui</MenuItem>
 					<MenuItem value='tomorrow'>Demain</MenuItem>
 				</Select>
-			</FormControl>
+			</FormControl> */}
 				<Button
 				className='create-event'
 				onClick={onCreateEvent}
