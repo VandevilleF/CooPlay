@@ -3,19 +3,15 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 
-import { useSocket } from '../../hooks/useSocket';
 import { useEvent } from '../../hooks/useEvent';
-import { useAuth } from '../../hooks/useAuth';
+import { useChat } from '../../hooks/useChat';
 
 import { useState } from 'react';
 
 export const InputMessage = () => {
-	const [message, setMessage] = useState('');
-	const [sending, setSending] = useState(false);
-
-	const socket = useSocket();
 	const { eventId } = useEvent();
-	const { user } = useAuth();
+	const { sendMessage } = useChat(eventId);
+	const [message, setMessage] = useState('');
 
 	const handleMessage = (value) => {
 		setMessage(value);
@@ -23,26 +19,9 @@ export const InputMessage = () => {
 
 	const handleSendMessage = () => {
 		if (!message.trim()) return;
-		if(!socket) {
-			console.error('Socket non connecté');
-			return;
-		}
-
-		setSending(true);
-
-		const messageData = {
-			eventId: eventId,
-			message: message.trim(),
-			userId: user.id,
-			timestamp: new Date().toISOString()
-		};
-
-		// Envoi du message via socket
-		socket.emit('send-message', messageData);
-
+		sendMessage(message);
 		setMessage('');
-		setSending(false);
-	}
+	};
 
 	const inputMessage = {
 		'& .MuiOutlinedInput-root': {
@@ -73,11 +52,10 @@ export const InputMessage = () => {
 			placeholder='Écrivez votre message...'
 			size='small'
 			sx={inputMessage}
-			disabled={sending || !socket}
 			></TextField>
 			<Button
 			onClick={handleSendMessage}
-			disabled={!message.trim() || sending || !socket}
+			disabled={!message.trim()}
 			>
 				<SendIcon sx={{color: '#4f46e5'}} />
 			</Button>

@@ -14,18 +14,15 @@ export const chatHandler = async (socket, io) => {
 	// Rejoindre une room d'événement
 	socket.on('join-event', async (eventId) => {
 		try {
-			const eventIdInt = parseInt(eventId, 10);
-			await chatService.canJoinChat(user.id, eventIdInt);
+			await chatService.canJoinChat(user.id, parseInt(eventId));
 			socket.join(`event-${eventId}`);
-			console.log(`${socket.username} joined event ${eventId}`);
 
 			// Notifie l'arrivé de l'utilisateur
-			socket.to(`event-${eventId}`).emit('user-joined', {
+			io.to(`event-${eventId}`).emit('user-joined', {
 				username: socket.username,
 				message: `${socket.username} a rejoint le chat`
 			});
 		} catch (error) {
-			console.error('Join event error:', error);
 			socket.emit('join-error', {error: error.message});
 		}
 	});
@@ -33,41 +30,28 @@ export const chatHandler = async (socket, io) => {
 	// Quitter une room d'événement
 	socket.on('leave-event', (eventId) => {
 		socket.leave(`event-${eventId}`);
-		console.log(`${socket.username} left event ${eventId}`);
-
 		// Notifier le départ
-		socket.to(`event-${eventId}`).emit('user-left', {
+		io.to(`event-${eventId}`).emit('user-left', {
 			username: socket.username,
 			message: `${socket.username} a quitté le chat`
 		});
 	});
 
 	// Envoyer un message
-	socket.on('send-message', async (messageData) => {
+	socket.on('send-message', async ({ eventId, message }) => {
 		try {
-			const { eventId, message } = messageData;
-			const eventIdInt = parseInt(eventId, 10);
-
 			// Sauvegarder en base
-			const savedMessage = await chatService.createMessage(user.id, eventIdInt, message);
+			const savedMessage = await chatService.createMessage(user.id, parseInt(eventId), message);
 
-			// Formattage du message pour le frontend
-			const formattedMessage = {
+			// Diffuser le message formaté à tous les participants
+			io.to(`event-${eventId}`).emit('new-message', {
 				id: savedMessage.id,
 				eventId: savedMessage.event_id,
 				userId: savedMessage.user_id,
 				username: socket.username,
 				message: savedMessage.message,
 				timestamp: savedMessage.created_at,
-				user: {
-					id: user.id,
-					username: socket.username
-				}
-			};
-
-			// Diffuser le message formaté à tous les participants
-			io.to(`event-${eventId}`).emit('new-message', formattedMessage);
-
+			});
 		} catch (error) {
 			socket.emit('message-error', { error: error.message });
 		}
