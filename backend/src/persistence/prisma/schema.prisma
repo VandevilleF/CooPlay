@@ -63,6 +63,7 @@ model Event {
   max_participants Int
   created_at       DateTime           @default(now())
   updated_at       DateTime           @updatedAt
+  encrypted_key    String
   chats            Chat[]
   participants     EventParticipant[]
   creator          User               @relation("EventCreator", fields: [creator_id], references: [id], onDelete: Cascade)
