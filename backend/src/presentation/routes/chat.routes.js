@@ -1,6 +1,7 @@
 import express from "express";
 import { firebaseAuthMiddleware } from '../../presentation/middlewares/firebaseauth.middleware.js';
 import { getMessages } from '../../presentation/controllers/chat.controller.js';
+import { getEncryptionKey } from '../../presentation/controllers/encryption.controller.js';
 
 const router = express.Router();
 
@@ -130,5 +131,7 @@ const router = express.Router();
  *               message: "Erreur interne du serveur"
  */
 router.get('/events/:eventId/messages', firebaseAuthMiddleware, getMessages);
+
+router.get('/events/:eventId/encryption_key', firebaseAuthMiddleware, getEncryptionKey);
 
 export default router;

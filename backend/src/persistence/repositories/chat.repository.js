@@ -6,11 +6,12 @@ export class ChatRepository {
 	}
 
 	async saveMessage(userId, eventId, message) {
+		const messageToSave = typeof message === 'object' ? JSON.stringify(message) : message;
 		return await this.prisma.chat.create({
 			data: {
 				user_id: userId,
 				event_id: eventId,
-				message: message
+				message: messageToSave
 			},
 			include: {
 				user: {
