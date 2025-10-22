@@ -5,6 +5,7 @@ import { MyEventPage } from './pages/event/MyEventPage.jsx';
 import { ThemeProvider } from '@mui/material/styles';
 import { ProfilePage } from './pages/profil/ProfilePage.jsx';
 import { ChatEventPage } from './pages/event/ChatEventPage.jsx';
+import { PrivateRoutes } from './routes/ProtectedRoute.jsx';
 import { theme } from './styles/theme';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/components/authComponents.css'
@@ -18,10 +19,12 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/events" element={<EventPage />} />
-          <Route path="/events/my-events" element={<MyEventPage />} />
-          <Route path="/profil" element={<ProfilePage />} />
-          <Route path='/events/:eventId' element={<ChatEventPage />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/events" element={<EventPage />} />
+            <Route path="/events/my-events" element={<MyEventPage />} />
+            <Route path="/profil" element={<ProfilePage />} />
+            <Route path='/events/:eventId' element={<ChatEventPage />} />
+          </Route>
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
