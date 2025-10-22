@@ -8,6 +8,6 @@ export class Chat {
 	}
 
 	isValidMessage() {
-		return typeof this.message === "string" && this.message.trim().length > 0 && this.message.length <= 500;
+		return typeof this.message === 'object' && this.message.encrypted && this.message.nonce;
 	}
 }
