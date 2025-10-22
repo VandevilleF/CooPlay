@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { chatService } from "../services/chatService";
 import { useSocket } from './useSocket';
 import { useAuth } from "./useAuth";
+import { encryptionService } from '../services/encryptionService';
 
 export const useChat = (eventId) => {
 	const socket = useSocket();
@@ -9,11 +10,36 @@ export const useChat = (eventId) => {
 	const [messages, setMessages] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [keyLoaded, setKeyLoaded] = useState(false);
+
+	// Charge la clé de chiffrement
+	useEffect(() => {
+		if (!eventId || authLoading || !user) return;
+
+		const loadEncryptionKey = async () => {
+			try {
+				if (!encryptionService.hasKey(eventId)) {
+					const keyBase64 = await chatService.getEncryptionKey(eventId);
+					encryptionService.setEventKey(eventId, keyBase64);
+				}
+				setKeyLoaded(true);
+			} catch (error) {
+				console.error('Erreur chargement clé:', error);
+				setError('Impossible de charger la clé de chiffrement');
+			}
+		};
+
+		loadEncryptionKey();
+	}, [eventId, authLoading, user]);
 
 	// Charge les messages
 	useEffect(() => {
 		if (authLoading) return;
-		if (!eventId || !user) {
+		if (!eventId || !user || !keyLoaded) {
+			if (!authLoading && eventId && user && !keyLoaded) {
+				// Attendre que la clé soit chargée
+				return;
+			}
 			setLoading(false);
 			return;
 		};
@@ -21,8 +47,20 @@ export const useChat = (eventId) => {
 		const loadMessages = async () => {
 			try {
 				setLoading(true);
-				const msgs = await chatService.getEventMessages(eventId);
-				setMessages(msgs || []);
+				const encryptedMsgs = await chatService.getEventMessages(eventId);
+
+				const decryptedMsgs = encryptedMsgs.map(msg => {
+					//Parse la string JSON en objet
+					const messageObj = typeof msg.message === 'string' ? JSON.parse(msg.message) : msg.message;
+
+					const decrypted = encryptionService.decryptMessage(eventId, messageObj);
+
+					return {
+						...msg,
+						message: decrypted || '[Impossible de déchiffrer bah oui]'
+					};
+				});
+				setMessages(decryptedMsgs);
 			} catch (err) {
 				console.error('Erreur chargement messages:', err);
 				setError(err.messages);
@@ -32,20 +70,25 @@ export const useChat = (eventId) => {
 		};
 
 		loadMessages();
-	}, [eventId, user, authLoading]);
+	}, [eventId, user, authLoading, keyLoaded]);
 
 	useEffect(() => {
-		if (!eventId || !socket) return;
+		if (!eventId || !socket || !encryptionService.hasKey(eventId)) return;
 
 		// Rejoint la room de l'event
 		socket.emit('join-event', String(eventId));
 
 		// Écoute les nouveaux messages
 		socket.on('new-message', (newMessage) => {
-			console.log('Nouveau message reçu:', newMessage);
-			setMessages(prev => {
-				return [...prev, newMessage];
-			});
+			// Parse si c'est une string
+			const messageObj = typeof newMessage.message === 'string' ? JSON.parse(newMessage.message) : newMessage.message;
+
+			// Déchiffre le message reçu
+			const decrypted = encryptionService.decryptMessage(eventId, messageObj);
+			setMessages(prev => [...prev, {
+					...newMessage,
+					message: decrypted || '[Impossible de déchiffrer]'
+				}]);
 		});
 
 		// Écoute les erreurs
@@ -68,10 +111,15 @@ export const useChat = (eventId) => {
 	const sendMessage = (message) => {
 		if (!socket || !message.trim()) return;
 
-		socket.emit('send-message', {
-			eventId: String(eventId),
-			message: message.trim()
-		});
+		try {
+			const encryptedData = encryptionService.encryptMessage(eventId, message.trim());
+			socket.emit('send-message', {
+				eventId: String(eventId),
+				message: encryptedData
+			});
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return { messages, loading, error, sendMessage };
