@@ -1,4 +1,5 @@
 import { prisma } from '../../shared/prismaClient.js'
+import { serverEncryptionService } from '../../business/services/server.encryption.service.js';
 
 export class EventRepository {
 	constructor(prismaClient = prisma) {
@@ -40,6 +41,12 @@ export class EventRepository {
 	}
 
 	async createEvent(title, description = null, userId, start_at, max_participants, gameId) {
+		// Génère une clé de chiffrement
+		const eventKey = serverEncryptionService.generateEventKey();
+		console.log('✅ Event key generated:', eventKey);
+		const encryptedKey = serverEncryptionService.encryptEventKey(eventKey);
+		console.log('✅ Encrypted key:', encryptedKey);
+
 		return this.prisma.event.create({
 			data: {
 				title,
@@ -48,6 +55,7 @@ export class EventRepository {
 				start_at: new Date(start_at),
 				max_participants,
 				game_id: gameId,
+				encrypted_key: encryptedKey
 			},
 			include: {
 				game: true
