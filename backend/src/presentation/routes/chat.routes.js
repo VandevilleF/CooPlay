@@ -130,8 +130,8 @@ const router = express.Router();
  *               success: false
  *               message: "Erreur interne du serveur"
  */
-router.get('/events/:eventId/messages', firebaseAuthMiddleware, getMessages);
+router.get('/events/:eventId/messages', getMessages);
 
-router.get('/events/:eventId/encryption_key', firebaseAuthMiddleware, getEncryptionKey);
+router.get('/events/:eventId/encryption_key', getEncryptionKey);
 
 export default router;

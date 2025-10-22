@@ -36,6 +36,9 @@ export class EventRepository {
 				game: {
 					select: { id: true, name: true, cover_url: true }
 				}
+			},
+			orderBy: {
+				created_at: 'desc',
 			}
 		});
 	}

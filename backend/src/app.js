@@ -14,6 +14,7 @@ import { AuthService } from './business/services/auth.service.js';
 import { UserService } from './business/services/user.service.js';
 import { FavoriteGameService } from './business/services/favorite.service.js';
 import { swaggerDocs } from './config/docs/swagger.js';
+import { firebaseAuthMiddleware } from './presentation/middlewares/firebaseauth.middleware.js';
 
 import { SocketManager } from './infrastructure/websocket/socketManager.js';
 import { chatHandler } from './presentation/handler/chat.handler.js';
@@ -31,11 +32,11 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use('/auth', authRoutes);
-app.use('/users', userRoutes);
-app.use('/favorites', favoritesGamesRoutes);
-app.use('/events', eventsRoutes);
-app.use('/chat', chatRoutes);
-app.use('/games', gameRoutes);
+app.use('/users', firebaseAuthMiddleware, userRoutes);
+app.use('/favorites', firebaseAuthMiddleware, favoritesGamesRoutes);
+app.use('/events', firebaseAuthMiddleware, eventsRoutes);
+app.use('/chat', firebaseAuthMiddleware, chatRoutes);
+app.use('/games', firebaseAuthMiddleware, gameRoutes);
 
 const authService = new AuthService();
 const userService = new UserService();

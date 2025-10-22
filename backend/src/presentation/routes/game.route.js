@@ -166,6 +166,6 @@ const gameController = new GameController();
  *       scheme: bearer
  *       bearerFormat: JWT
  */
-router.get('/search', firebaseAuthMiddleware, (req, res) => gameController.searchGames(req, res));
+router.get('/search', (req, res) => gameController.searchGames(req, res));
 
 export default router;

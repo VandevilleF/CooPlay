@@ -33,7 +33,7 @@ const userService = new UserService(userRepository, authService);
  *       401:
  *         description: Non authentifié
  */
-router.get('/profil', firebaseAuthMiddleware, async (req, res) => {
+router.get('/profil', async (req, res) => {
   const user = await userService.getUserByFirebaseUid(req.user.uid);
   res.status(200).json({ user });
 });
@@ -73,7 +73,7 @@ router.get('/profil', firebaseAuthMiddleware, async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.put('/profil', firebaseAuthMiddleware, async (req, res) => {
+router.put('/profil', async (req, res) => {
   const user = await userService.getUserByFirebaseUid(req.user.uid);
   const { username, describe } = req.body;
 
@@ -98,7 +98,7 @@ router.put('/profil', firebaseAuthMiddleware, async (req, res) => {
  *       500:
  *         description: Erreur serveur lors de la suppression
  */
-router.delete('/profil', firebaseAuthMiddleware, async (req, res) => {
+router.delete('/profil', async (req, res) => {
   if (!req.user) return res.status(401).json({ error: "Token manquant ou invalide" });
 
   try {

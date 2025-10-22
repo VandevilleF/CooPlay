@@ -35,7 +35,7 @@ const userService = new UserService(userRepository, authService);
  *       401:
  *         description: Non authentifié
  */
-router.get('/', firebaseAuthMiddleware, async (req, res) => {
+router.get('/', async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const favoritesGames = await favoriteGameService.listFavoritesGames(user.id);
@@ -72,11 +72,11 @@ router.get('/', firebaseAuthMiddleware, async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.post('/:gameId', firebaseAuthMiddleware, async (req, res) => {
+router.post('/:gameId', async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const gameId = parseInt(req.params.gameId, 10);
-		
+
 		const favorite = await favoriteGameService.addFavoriteGame(user.id, gameId);
 		res.status(201).json(favorite);
 	} catch (err) {
@@ -106,7 +106,7 @@ router.post('/:gameId', firebaseAuthMiddleware, async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.delete('/:gameId', firebaseAuthMiddleware, async (req, res) => {
+router.delete('/:gameId', async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const gameId = parseInt(req.params.gameId, 10);

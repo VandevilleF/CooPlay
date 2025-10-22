@@ -1,5 +1,4 @@
 import express from "express";
-import { firebaseAuthMiddleware } from '../../presentation/middlewares/firebaseauth.middleware.js';
 import { EventService } from "../../business/services/event.service.js";
 import { UserService } from "../../business/services/user.service.js";
 import { AuthService } from '../../business/services/auth.service.js';
@@ -74,7 +73,7 @@ router.get("/", async (req, res) => {
  *       400:
  *         description: Erreur de validation
  */
-router.post("/", firebaseAuthMiddleware, async (req, res) => {
+router.post("/", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { title, description, start_at, max_participants, gameId } = req.body;
@@ -134,7 +133,7 @@ router.post("/", firebaseAuthMiddleware, async (req, res) => {
  *                   type: string
  *                   example: "User not found"
  */
-router.get("/my-events", firebaseAuthMiddleware, async (req, res) => {
+router.get("/my-events", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		// Récupérer seulement les événements créés par l'utilisateur OU où il participe
@@ -190,7 +189,7 @@ router.get("/my-events", firebaseAuthMiddleware, async (req, res) => {
  *       404:
  *         description: Événement non trouvé
  */
-router.put("/:eventId", firebaseAuthMiddleware, async (req, res) => {
+router.put("/:eventId", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { eventId } = req.params;
@@ -231,7 +230,7 @@ router.put("/:eventId", firebaseAuthMiddleware, async (req, res) => {
  *       400:
  *         description: Erreur lors de l’inscription
  */
-router.post("/:eventId/join", firebaseAuthMiddleware, async (req, res) => {
+router.post("/:eventId/join", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { eventId } = req.params;
@@ -265,7 +264,7 @@ router.post("/:eventId/join", firebaseAuthMiddleware, async (req, res) => {
  *       400:
  *         description: Erreur lors de la désinscription
  */
-router.post("/:eventId/leave", firebaseAuthMiddleware, async (req, res) => {
+router.post("/:eventId/leave", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { eventId } = req.params;
@@ -299,7 +298,7 @@ router.post("/:eventId/leave", firebaseAuthMiddleware, async (req, res) => {
  *       400:
  *         description: Erreur lors de la suppression
  */
-router.delete("/:eventId", firebaseAuthMiddleware, async (req, res) => {
+router.delete("/:eventId", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { eventId } = req.params;
@@ -342,7 +341,7 @@ router.delete("/:eventId", firebaseAuthMiddleware, async (req, res) => {
  *       400:
  *         description: Erreur lors de la mise à jour
  */
-router.put("/:eventId/game", firebaseAuthMiddleware, async (req, res) => {
+router.put("/:eventId/game", async (req, res) => {
 	try {
 		const user = await userService.getUserByFirebaseUid(req.user.uid);
 		const { eventId } = req.params;
