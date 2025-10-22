@@ -1,11 +1,12 @@
 import { Chat } from '../../business/domain/entities/Chat.js';
+import { serverEncryptionService } from './server.encryption.service.js';
 
 export class ChatService {
 	constructor(chatRepository, eventRepository) {
 		this.chatRepository = chatRepository;
 		this.eventRepository = eventRepository;
 	}
-	
+
 	async canJoinChat(userId, eventId) {
 		const event = await this.eventRepository.getEventById(eventId);
 		if (event.creator_id === userId) {
@@ -15,6 +16,16 @@ export class ChatService {
 		if (!isParticipant) throw new Error('Vous ne participer pas à cet événement');
 
 		return true;
+	}
+
+	async getEncryptionKey(eventId) {
+		const event = await this.eventRepository.getEventById(eventId);
+
+		if (!event.encrypted_key) {
+			throw new Error('Clé de chiffrement manquante pour cet événement');
+		}
+
+		return serverEncryptionService.decryptEventKey(event.encrypted_key);
 	}
 
 	async createMessage(userId, eventId, content) {
