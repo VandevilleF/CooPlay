@@ -1,15 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
 
-export const PrivateRoutes = ({ children }) => {
+export const PrivateRoutes = () => {
 	const { isAuthenticated, authReady } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		// Rediriger seulement quand authReady est true et que l'utilisateur n'est pas authentifié
 		if (authReady && !isAuthenticated) {
-		navigate("/", { replace: true });
+			navigate("/", { replace: true });
 		}
 	}, [authReady, isAuthenticated, navigate]);
 
@@ -21,5 +21,5 @@ export const PrivateRoutes = ({ children }) => {
 		);
 	}
 
-	return children;
+	return <Outlet />
 }

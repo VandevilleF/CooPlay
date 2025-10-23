@@ -11,7 +11,6 @@ export const useAuth = () => {
   // Écouter l'état d'authentification Firebase
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-      setAuthReady(true);
 
       if (firebaseUser) {
         // Attendre que le token soit disponible avant de faire l'appel API
@@ -30,6 +29,7 @@ export const useAuth = () => {
         setUser(null);
         setCurrentUserId(null);
       }
+      setAuthReady(true);
     });
     return () => unsubscribe();
   }, []);
