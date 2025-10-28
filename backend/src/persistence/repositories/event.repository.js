@@ -46,9 +46,7 @@ export class EventRepository {
 	async createEvent(title, description = null, userId, start_at, max_participants, gameId) {
 		// Génère une clé de chiffrement
 		const eventKey = serverEncryptionService.generateEventKey();
-		console.log('✅ Event key generated:', eventKey);
 		const encryptedKey = serverEncryptionService.encryptEventKey(eventKey);
-		console.log('✅ Encrypted key:', encryptedKey);
 
 		return this.prisma.event.create({
 			data: {
