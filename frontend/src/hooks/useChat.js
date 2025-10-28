@@ -73,7 +73,7 @@ export const useChat = (eventId) => {
 	}, [eventId, user, authLoading, keyLoaded]);
 
 	useEffect(() => {
-		if (!eventId || !socket || !encryptionService.hasKey(eventId)) return;
+		if (!eventId || !socket || !keyLoaded) return;
 
 		// Rejoint la room de l'event
 		socket.emit('join-event', String(eventId));
@@ -106,7 +106,7 @@ export const useChat = (eventId) => {
 			socket.off('join-error');
 			socket.off('message-error');
 		}
-	}, [socket, eventId])
+	}, [socket, eventId, keyLoaded])
 
 	const sendMessage = (message) => {
 		if (!socket || !message.trim()) return;
