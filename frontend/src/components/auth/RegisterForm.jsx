@@ -2,9 +2,9 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth } from '../../services/firebase/config';
-import { validatePassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { validatePassword, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
@@ -13,7 +13,19 @@ export const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
+  // Effect pour gérer la redirection
+  useEffect(() => {
+    if (shouldRedirect) {
+      const timer = setTimeout(() => {
+        handleRedirectLogin();
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [shouldRedirect]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,10 +49,16 @@ export const RegisterForm = () => {
         return;
       }
 
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      handleRedirectLogin();
+      // Envoyer l'email de vérification
+      await sendEmailVerification(userCredential.user, {
+        url: 'http://localhost:5173',
+        handleCodeInApp: false
+      });
 
+      setSuccessMessage('Compte créé ! Un email de vérification a été envoyé à votre adresse.');
+      setShouldRedirect(true);
     } catch (error) {
       console.error(error);
     }
@@ -57,6 +75,12 @@ export const RegisterForm = () => {
 
       {errors.general && (
         <Typography color="error" sx={{ mb: 2 }}>{errors.general}</Typography>
+      )}
+
+      {successMessage && (
+        <Typography color="success" sx={{ mb: 2, textAlign: 'center', color: 'green' }}>
+          {successMessage}
+        </Typography>
       )}
 
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>

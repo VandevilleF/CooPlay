@@ -34,9 +34,18 @@ export const LoginForm = () => {
         throw new Error('Authentification échouée - user undefined');
       }
 
+      if (!userCredential.user.emailVerified) {
+        setErrors({
+          general: 'Veuillez vérifier votre email avant de vous connecter. Vérifiez votre boîte de réception.'
+        });
+        // Déconnecter l'utilisateur
+        await auth.signOut();
+        setLoading(false);
+        return;
+      }
+
       // Continue seulement si tout est OK
       const idToken = await userCredential.user.getIdToken();
-
       await httpClient.post('/auth/login', { idToken });
 
       handleHomePage();
@@ -48,7 +57,13 @@ export const LoginForm = () => {
         stack: error.stack
       });
 
-      setErrors({ general: `Erreur: ${error.message}` });
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+        setErrors({ general: 'Email ou mot de passe incorrect.' });
+      } else if (error.code === 'auth/user-not-found') {
+        setErrors({ general: 'Aucun compte trouvé avec cet email.' });
+      } else {
+        setErrors({ general: `Erreur: ${error.message}` });
+      }
     } finally {
       setLoading(false);
     }
