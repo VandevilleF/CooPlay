@@ -28,10 +28,4 @@ export const chatService = {
 			console.error('Erreur dans getEventMessages:', error)
 		}
 	},
-
-	// Envoi un message
-	// sendMessage: async (eventId, message) => {
-	// 	const response = await httpClient.post(`/chat/events/${eventId}/messages`, { message });
-	// 	return response.data;
-	// }
 }
