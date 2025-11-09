@@ -40,15 +40,15 @@ export class ChatRepository {
 		});
 	}
 
-	async getMessageCount(eventId) {
-		return await this.prisma.chat.count({
-			where: { event_id: eventId }
-		});
-	}
+	// async getMessageCount(eventId) {
+	// 	return await this.prisma.chat.count({
+	// 		where: { event_id: eventId }
+	// 	});
+	// }
 
-	async deleteEventMessages(eventId) {
-		return await this.prisma.chat.deleteMany({
-			where: { event_id: eventId }
-		});
-	}
+	// async deleteEventMessages(eventId) {
+	// 	return await this.prisma.chat.deleteMany({
+	// 		where: { event_id: eventId }
+	// 	});
+	// }
 }
