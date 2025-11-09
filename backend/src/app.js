@@ -28,7 +28,10 @@ const httpServer = http.createServer(app);
 const socketManager = new SocketManager(httpServer);
 socketManager.setup(socketAuthMiddleware, chatHandler);
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(helmet());
 app.use(express.json());
 app.use('/auth', authRoutes);
