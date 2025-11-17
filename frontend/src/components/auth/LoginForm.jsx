@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firebase/config';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import httpClient from '../../services/httpClient';
 
 export const LoginForm = () => {
@@ -13,6 +13,7 @@ export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -69,7 +70,35 @@ export const LoginForm = () => {
     }
   };
 
-  const handleRedirectRegister= () => {
+  const handleForgotenPassword = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setSuccessMessage('Email de réinitialisation envoyé');
+      setErrors({});
+    } catch (error) {
+      console.error('Erreur:', error);
+      switch (error.code) {
+      case 'auth/missing-email':
+        setErrors({general: 'Adresse email manquante'});
+        break;
+      case 'auth/invalid-email':
+        setErrors({general: 'Adresse email invalide'});
+        break;
+      case 'auth/user-not-found':
+        setErrors({general: 'Aucun compte associé à cette adresse email'});
+        break;
+      case 'auth/too-many-requests':
+        setErrors({general: 'Trop de tentatives. Veuillez réessayer plus tard.'});
+        break;
+      default:
+        setErrors({general: 'Une erreur est survenue. Veuillez réessayer.'});
+        break;
+      }
+      setSuccessMessage('');
+    }
+  }
+
+  const handleRedirectRegister = () => {
     navigate('/register');
   };
 
@@ -85,6 +114,12 @@ export const LoginForm = () => {
       {errors.general && (
         <Typography color="error" sx={{ mb: 2, textAlign: 'center' }}>
           {errors.general}
+        </Typography>
+      )}
+
+      {successMessage && (
+        <Typography color="success" sx={{ mb: 2, textAlign: 'center' }}>
+          {successMessage}
         </Typography>
       )}
 
@@ -110,9 +145,11 @@ export const LoginForm = () => {
           disabled={loading}
         />
 
-        <Typography className="auth-forgot">
+        <Button
+        onClick={handleForgotenPassword}
+        className="auth-forgot">
           Mot de passe oublié ?
-        </Typography>
+        </Button>
 
         <Button
           type="submit"
