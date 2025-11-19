@@ -8,7 +8,7 @@ import { auth } from '../../services/firebase/config';
 import { signOut } from 'firebase/auth';
 import { getTimeDifference } from '../../utils/getTimeDifference';
 
-export const ProfileHeader = ({ user }) => {
+export const ProfileHeader = ({ user, onEditClick }) => {
 	const navigate = useNavigate();
 
 	const handleSignOut = async () => {
@@ -52,9 +52,23 @@ export const ProfileHeader = ({ user }) => {
 					</Typography>
 					<Typography sx={{ fontSize: 15, color: '#9ca3af' }}>{user.describe}</Typography>
 				</Box>
-				<Box sx={{ alignSelf: { xs: 'flex-end', sm: 'auto' }}}>
+				<Box sx={{
+					alignSelf: { xs: 'flex-end', sm: 'auto' },
+					display: 'flex',
+					alignItems: 'start',
+					gap: 1
+					}}
+					>
+					<Button
+					onClick={onEditClick}
+					size="small"
+					sx={{border: '1px solid #6366f1'}}
+					>
+						Modifier
+					</Button>
 					<Button
 					onClick={handleSignOut}
+					size="small"
 					sx={{border: '1px solid #6366f1'}}
 					>
 						Déconnexion
