@@ -41,7 +41,7 @@ router.get('/profil', async (req, res) => {
 /**
  * @openapi
  * /users/profil:
- *   put:
+ *   patch:
  *     summary: Modifie les infos de l’utilisateur connecté
  *     tags:
  *       - User
@@ -60,6 +60,9 @@ router.get('/profil', async (req, res) => {
  *               describe:
  *                 type: string
  *                 example: "Fan de MMORPG"
+ *               email:
+ *                 type: string
+ *                 example: "test@gmail.com"
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour
@@ -73,11 +76,16 @@ router.get('/profil', async (req, res) => {
  *       401:
  *         description: Non authentifié
  */
-router.put('/profil', async (req, res) => {
+router.patch('/profil', async (req, res) => {
   const user = await userService.getUserByFirebaseUid(req.user.uid);
-  const { username, describe } = req.body;
+  const { username, describe, email } = req.body;
 
-  const updatedUser = await userService.updateUser(user.id, { username, describe })
+  const updateData = {};
+  if (username !== undefined) updateData.username = username;
+  if (describe !== undefined) updateData.describe = describe;
+  if (email !== undefined) updateData.email = email;
+
+  const updatedUser = await userService.updateUser(user.id, updateData)
   res.status(200).json({ user: updatedUser });
 });
 
